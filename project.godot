@@ -24,6 +24,10 @@ config/name="RunnersHi"
 run/main_scene="res://world/Island.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Accel="*res://sensor/android/Accel.tscn"
+
 [input]
 
 player_turn_left={
