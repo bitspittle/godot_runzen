@@ -1,20 +1,30 @@
 extends KinematicBody
 
 const PERIOD_SECS = 0.5
-const NOISE_FILTER = 0.5
+const NOISE_FILTER = 1.0
+const STEP_DETECTING_SECS = 0.5 # If no step after this many secs, we stop
 var GRAVITY = Vector3.DOWN * 10
 
-var turning_speed = PI / 2
-var running_speed = 10
-
-var _half_steps_buffer = CircularBuffer.new()
-var _steps_per_sec = 0.0
-
-var acc_history = CircularBuffer.new()
+var turning_speed = PI / 2 # radians per sec
 
 var _period_remaining = PERIOD_SECS
-
+# Steps are like waves, and we detect the peaks and troughs of those waves
+var _acc_sign = 0 # 0 = uninitialized, -1 stepping down, 1 stepping up
 var _turn_input = 0
+var _half_steps = CircularBuffer.new() # List of arrays, [t, step_peak]
+
+var _velocity = Vector3.ZERO
+
+var _last_min = 0.0
+var _last_max = 0.0
+var _elapsed = 0
+
+var _is_mobile: bool
+
+onready var _rest_timer = $RestTimer
+
+func _ready():
+	_is_mobile = OS.get_name() == "Android"
 
 func _input(event):
 	if event is InputEventScreenTouch:
@@ -27,45 +37,50 @@ func _input(event):
 			_turn_input = 0
 
 func _process(delta):
-	acc_history.append(Input.get_accelerometer())
+	_elapsed += delta
 
-	_period_remaining -= delta
-	if _period_remaining < 0:
-		_period_remaining = PERIOD_SECS
+	if _is_mobile:
+		var acc_len = Input.get_accelerometer().length() - 10.0
 
-		var last_min = 0.0
-		var last_max = 0.0
+		if abs(acc_len) >= NOISE_FILTER:
+			_process_acc(acc_len)
+	else:
+		if Input.is_action_just_pressed("player_forward"):
+			_rest_timer.start(STEP_DETECTING_SECS)
+			_half_steps.append([_elapsed, -10])
+		elif Input.is_action_just_released("player_backward"):
+			_rest_timer.start(STEP_DETECTING_SECS)
+			_half_steps.append([_elapsed, 10])
 
-		var last_section = 0 # -1 = negative, 1 = positive, 0 = uninitialized
-		for i in acc_history.size():
-			var acc: Vector3 = acc_history.get_item(i)
+	_prune_old_steps()
 
-			var curr_section = sign(acc.x)
-			if curr_section < 0:
-				last_min = min(last_min, acc.x)
-			elif curr_section > 0:
-				last_max = max(last_max, acc.x)
+func _process_acc(acc_len: float):
+	_rest_timer.start(STEP_DETECTING_SECS)
 
-			if last_section != 0 && curr_section != last_section:
-				if curr_section < 0: # We just changed from max to min
-					_half_steps_buffer.append(last_max)
-					last_max = 0.0
-				elif curr_section > 0:
-					_half_steps_buffer.append(last_min)
-					last_min = 0.0
+	var acc_sign = sign(acc_len)
+	if _acc_sign == 0:
+		_acc_sign = acc_sign
 
-			last_section = curr_section
-		acc_history.clear()
+	if _acc_sign != acc_sign:
+		if _acc_sign < 0:
+			# We finished a down step
+			_half_steps.append([_elapsed, _last_min])
+			_last_min = 0.0
+		else:
+			# We finished an up step
+			_half_steps.append([_elapsed, _last_max])
+			_last_max = 0.0
+		_acc_sign = acc_sign
 
-		var half_steps = 0
-		for half_step in _half_steps_buffer.iter():
-			print(abs(half_step), " > ", NOISE_FILTER, "?")
-			if abs(half_step) > NOISE_FILTER:
-				half_steps += 1
+	if acc_sign < 0:
+		_last_min = min(_last_min, acc_len)
+	else:
+		_last_max = max(_last_max, acc_len)
 
-		_steps_per_sec = (half_steps / 2.0) / PERIOD_SECS
-
-		_half_steps_buffer.clear()
+func _prune_old_steps():
+	var prune_before = _elapsed - 1.0
+	while !_half_steps.empty() &&_half_steps.get_item(0)[0] < prune_before:
+		_half_steps.remove_first()
 
 func _physics_process(delta):
 	var turn_input = _turn_input
@@ -73,24 +88,23 @@ func _physics_process(delta):
 		var turn_override = Input.get_action_strength("player_turn_right") - Input.get_action_strength("player_turn_left")
 		if turn_override != 0:
 			turn_input = turn_override
-
+#
 	if turn_input != 0:
 		rotation.y += -turn_input * turning_speed * delta
 
-	var move_magnitude = -_steps_per_sec
-	var direction = Vector3.ZERO
-
-	if OS.is_debug_build():
-		var move_override = Input.get_action_strength("player_backward") - Input.get_action_strength("player_forward")
-		if move_override != 0:
-			move_magnitude = move_override * 100
+	var steps_per_sec = _half_steps.size() / 2.0
+	var move_magnitude = -steps_per_sec
 
 	if move_magnitude != 0:
 		var rad = rotation.y
-		direction = Vector3(move_magnitude * sin(rad), 0, move_magnitude * cos(rad))
-
-	direction += GRAVITY
-	move_and_slide(direction * running_speed * delta, Vector3.UP)
+		_velocity = Vector3(move_magnitude * sin(rad), 0, move_magnitude * cos(rad))
+	_velocity += GRAVITY * delta
+	_velocity = move_and_slide(_velocity, Vector3.UP)
 
 	if is_on_wall():
 		rotation.y += PI
+
+func _on_RestTimer_timeout():
+	_half_steps.clear()
+	_velocity.x = 0
+	_velocity.z = 0
