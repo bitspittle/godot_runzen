@@ -1,9 +1,9 @@
 extends KinematicBody
 
 const PERIOD_SECS = 0.5
-const NOISE_FILTER = 1.0
+const NOISE_FILTER = 0.2
 const STEP_DETECTING_SECS = 0.5 # If no step after this many secs, we stop
-var GRAVITY = Vector3.DOWN * 10
+var GRAVITY = Vector3.DOWN * 9.8
 
 var turning_speed = PI / 2 # radians per sec
 
@@ -40,9 +40,13 @@ func _process(delta):
 	_elapsed += delta
 
 	if _is_mobile:
-		var acc_len = Input.get_accelerometer().length() - 10.0
+		var acc = Input.get_accelerometer()
+		var grav = Input.get_gravity()
+		# Offsetting "1.0" handles the fact that gravity is always pulling down on the device, I think
+		var acc_len = Vector3Util.proj_len(grav, acc) - 1.0
 
 		if abs(acc_len) >= NOISE_FILTER:
+			print(acc_len)
 			_process_acc(acc_len)
 	else:
 		if Input.is_action_just_pressed("player_forward"):

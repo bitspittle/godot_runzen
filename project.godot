@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "CircularBuffer",
 "language": "GDScript",
 "path": "res://common/CircularBuffer.gd"
+}, {
+"base": "Reference",
+"class": "Vector3Util",
+"language": "GDScript",
+"path": "res://common/Vector3Util.gd"
 } ]
 _global_script_class_icons={
-"CircularBuffer": ""
+"CircularBuffer": "",
+"Vector3Util": ""
 }
 
 [application]
