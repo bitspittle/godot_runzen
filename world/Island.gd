@@ -20,3 +20,5 @@ func _ready():
 		tree.scale.y = y
 		tree.rotation.y = rand_range(0, 2 * PI)
 		_trees.add_child(tree)
+
+	_player.current_path = $TestPath
