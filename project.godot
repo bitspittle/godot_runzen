@@ -12,22 +12,40 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "CircularBuffer",
 "language": "GDScript",
-"path": "res://common/CircularBuffer.gd"
+"path": "res://common/collections/CircularBuffer.gd"
+}, {
+"base": "Reference",
+"class": "CmdLineArgs",
+"language": "GDScript",
+"path": "res://common/os/CmdLineArgs.gd"
+}, {
+"base": "Reference",
+"class": "NetUtils",
+"language": "GDScript",
+"path": "res://common/network/NetUtils.gd"
+}, {
+"base": "Node",
+"class": "SyncDict",
+"language": "GDScript",
+"path": "res://common/network/SyncDict.gd"
 }, {
 "base": "Reference",
 "class": "Vector3Util",
 "language": "GDScript",
-"path": "res://common/Vector3Util.gd"
+"path": "res://common/math/Vector3Util.gd"
 } ]
 _global_script_class_icons={
 "CircularBuffer": "",
+"CmdLineArgs": "",
+"NetUtils": "",
+"SyncDict": "",
 "Vector3Util": ""
 }
 
 [application]
 
 config/name="RunnersHi"
-run/main_scene="res://world/Island.tscn"
+run/main_scene="res://EntryPoint.tscn"
 config/icon="res://icon.png"
 
 [input]

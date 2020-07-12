@@ -1,7 +1,9 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://player/Player.gd" type="Script" id=1]
-[ext_resource path="res://sensor/StepSensor.gd" type="Script" id=3]
+[ext_resource path="res://client/player/Player.gd" type="Script" id=1]
+[ext_resource path="res://controller/sensor/StepSensor.gd" type="Script" id=3]
+
+
 
 [sub_resource type="CapsuleMesh" id=1]
 radius = 0.5
@@ -46,5 +48,40 @@ rotation_mode = 4
 [node name="MeshInstance" type="MeshInstance" parent="PathFollow"]
 mesh = SubResource( 4 )
 material/0 = null
+
+[node name="Control" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="Control"]
+margin_left = 22.0
+margin_top = 21.0
+margin_right = 161.0
+margin_bottom = 88.0
+
+[node name="MphLabel" type="Label" parent="Control/Panel"]
+margin_left = 10.0
+margin_top = 11.0
+margin_right = 137.0
+margin_bottom = 37.0
+text = "Ran: %.2f miles"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StepsLabel" type="Label" parent="Control/Panel"]
+margin_left = 10.6292
+margin_top = 39.4737
+margin_right = 116.629
+margin_bottom = 70.4737
+text = "Steps / sec: %.1f
+"
+
+[node name="UpdateUiTimer" type="Timer" parent="Control"]
+autostart = true
 [connection signal="half_step_taken" from="StepSensor" to="." method="_on_StepSensor_half_step_taken"]
 [connection signal="timeout" from="RestTimer" to="." method="_on_RestTimer_timeout"]
+[connection signal="timeout" from="Control/UpdateUiTimer" to="." method="_on_UpdateUiTimer_timeout"]

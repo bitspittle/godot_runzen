@@ -5,7 +5,7 @@ onready var _grass = $Grass
 
 onready var _trees = $Trees
 
-var _tree_scene = preload("res://world/Tree.tscn")
+var _tree_scene = preload("res://client/world/Tree.tscn")
 
 func _ready():
 	randomize()
