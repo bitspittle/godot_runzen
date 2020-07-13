@@ -24,7 +24,7 @@ var _last_max = 0.0
 var _elapsed = 0
 
 func _ready():
-	_is_mobile = OS.get_name() == "Android"
+	_is_mobile = OsUtils.is_mobile()
 
 func _process(delta):
 	_elapsed += delta

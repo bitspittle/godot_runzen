@@ -20,9 +20,24 @@ _global_script_classes=[ {
 "path": "res://common/os/CmdLineArgs.gd"
 }, {
 "base": "Reference",
+"class": "NetConstants",
+"language": "GDScript",
+"path": "res://common/network/NetConstants.gd"
+}, {
+"base": "Reference",
+"class": "NetDefaults",
+"language": "GDScript",
+"path": "res://shared/network/NetDefaults.gd"
+}, {
+"base": "Reference",
 "class": "NetUtils",
 "language": "GDScript",
 "path": "res://common/network/NetUtils.gd"
+}, {
+"base": "Reference",
+"class": "OsUtils",
+"language": "GDScript",
+"path": "res://common/os/OsUtils.gd"
 }, {
 "base": "Node",
 "class": "SyncDict",
@@ -37,7 +52,10 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "CircularBuffer": "",
 "CmdLineArgs": "",
+"NetConstants": "",
+"NetDefaults": "",
 "NetUtils": "",
+"OsUtils": "",
 "SyncDict": "",
 "Vector3Util": ""
 }

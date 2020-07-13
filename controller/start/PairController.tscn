@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://shared/assets/themes/ui_theme.theme" type="Theme" id=1]
+[ext_resource path="res://shared/assets/fonts/font_square_giant.tres" type="DynamicFont" id=2]
+[ext_resource path="res://controller/start/PairController.gd" type="Script" id=3]
+
+[node name="PairController" type="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EnterCodeLabel" type="Label" parent="."]
+margin_left = 60.0
+margin_top = 60.0
+text = "Enter pairing code:
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CodeEdit" type="LineEdit" parent="."]
+margin_left = 80.3079
+margin_top = 123.693
+margin_right = 858.308
+margin_bottom = 197.693
+custom_fonts/font = ExtResource( 2 )
+max_length = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StatusLabel" type="Label" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 60.0
+margin_top = -131.0
+margin_right = -54.0
+margin_bottom = -49.0
+text = "(Status message here)
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="text_changed" from="CodeEdit" to="." method="_on_CodeEdit_text_changed"]

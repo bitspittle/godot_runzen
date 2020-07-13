@@ -25,10 +25,10 @@ static func get_unique_id(node: Node) -> int:
 	if is_networked(node):
 		return node.get_tree().get_network_unique_id()
 	else:
-		return NetGlobals.UNNETWORKED_ID
+		return NetConstants.UNNETWORKED_ID
 
 static func get_master_id(node: Node) -> int:
 	if is_networked(node):
 		return node.get_network_master()
 	else:
-		return NetGlobals.UNNETWORKED_ID
+		return NetConstants.UNNETWORKED_ID

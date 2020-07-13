@@ -1,0 +1,53 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://shared/assets/themes/ui_theme.theme" type="Theme" id=1]
+[ext_resource path="res://shared/assets/fonts/font_square_giant.tres" type="DynamicFont" id=2]
+[ext_resource path="res://client/start/WaitForPairing.gd" type="Script" id=3]
+
+[node name="WaitForPairing" type="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UseCodeLabel" type="Label" parent="."]
+margin_left = 60.0
+margin_top = 60.0
+margin_right = 917.0
+margin_bottom = 112.0
+rect_pivot_offset = Vector2( -151.206, -299.557 )
+text = "On a device, use pairing code:
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PairingCodeLabel" type="Label" parent="."]
+margin_left = 60.0
+margin_top = 165.072
+margin_right = 632.0
+margin_bottom = 296.072
+rect_pivot_offset = Vector2( -151.206, -299.557 )
+custom_fonts/font = ExtResource( 2 )
+text = "ab12c
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WaitingLabel" type="Label" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 60.0
+margin_top = -120.0
+margin_right = 632.0
+margin_bottom = -75.9231
+rect_pivot_offset = Vector2( -151.206, -299.557 )
+text = "Waiting for controller...
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
