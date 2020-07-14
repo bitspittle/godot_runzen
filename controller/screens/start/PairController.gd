@@ -12,9 +12,9 @@ func _ready():
 	NetUtils.on_server_connected(self, "_connected_success")
 	NetUtils.on_server_connection_failed(self, "_connected_failure")
 
-	GlobalState.handshake.connect("pairing_succeeded", self, "_pairing_succeeded")
+	Handshake.connect("pairing_succeeded", self, "_pairing_succeeded")
 
-	var client_scene = preload("res://shared/network/Client.tscn")
+	var client_scene = preload("res://shared/frontend/network/Client.tscn")
 	get_tree().get_root().add_child(client_scene.instance())
 
 func _connected_success():
@@ -25,7 +25,7 @@ func _connected_failure():
 
 func _on_CodeEdit_text_changed(new_text: String):
 	if new_text.length() == 5:
-		GlobalState.handshake.request_pairing(new_text.to_lower())
+		Handshake.request_pairing(new_text.to_lower())
 
 func _pairing_succeeded():
 	get_tree().change_scene("res://controller/screens/ControllerScreenMain.tscn")

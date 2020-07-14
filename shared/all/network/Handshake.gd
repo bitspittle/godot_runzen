@@ -1,8 +1,6 @@
 # A list of services provided between the server and clients and controllers
 extends Node
 
-class_name Handshake
-
 const _CHAR_CODE_A = 97
 
 signal received_pairing_code(code)

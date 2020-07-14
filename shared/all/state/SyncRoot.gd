@@ -1,6 +1,5 @@
 extends Node
 
-onready var handshake: Handshake = $Handshake
 onready var clients = $Clients
 onready var controllers = $Controllers
 

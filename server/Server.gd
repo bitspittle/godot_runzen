@@ -14,4 +14,4 @@ func _ready():
 	get_tree().set_network_peer(_server)
 	print("Server created and listening for connections")
 
-	GlobalState.handshake.prepare_server()
+	Handshake.prepare_server()

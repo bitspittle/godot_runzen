@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://client/screens/start/WaitForPairing.gd" type="Script" id=1]
-[ext_resource path="res://shared/assets/fonts/font_square_giant.tres" type="DynamicFont" id=2]
-[ext_resource path="res://shared/assets/themes/ui_theme.theme" type="Theme" id=3]
+[ext_resource path="res://shared/frontend/assets/fonts/font_square_giant.tres" type="DynamicFont" id=2]
+[ext_resource path="res://shared/frontend/assets/themes/ui_theme.theme" type="Theme" id=3]
 
 [node name="WaitForPairing" type="Panel"]
 anchor_right = 1.0

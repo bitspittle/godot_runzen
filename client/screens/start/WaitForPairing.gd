@@ -7,15 +7,15 @@ func _ready():
 
 	get_tree().connect("connected_to_server", self, "_connected_success")
 	get_tree().connect("connection_failed", self, "_connected_failure")
-	GlobalState.handshake.connect("received_pairing_code", self, "_received_pairing_code")
-	GlobalState.handshake.connect("pairing_succeeded", self, "_pairing_succeeded")
+	Handshake.connect("received_pairing_code", self, "_received_pairing_code")
+	Handshake.connect("pairing_succeeded", self, "_pairing_succeeded")
 
-	var client_scene = preload("res://shared/network/Client.tscn")
+	var client_scene = preload("res://shared/frontend/network/Client.tscn")
 	get_tree().get_root().add_child(client_scene.instance())
 
 func _connected_success():
 	print("Connection successful")
-	GlobalState.handshake.request_pairing_code()
+	Handshake.request_pairing_code()
 
 func _connected_failure():
 	print("Connection rejected")

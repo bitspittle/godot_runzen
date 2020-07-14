@@ -19,11 +19,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://common/os/CmdLineArgs.gd"
 }, {
-"base": "Node",
-"class": "Handshake",
-"language": "GDScript",
-"path": "res://shared/network/Handshake.gd"
-}, {
 "base": "Reference",
 "class": "NetConstants",
 "language": "GDScript",
@@ -32,7 +27,7 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "NetDefaults",
 "language": "GDScript",
-"path": "res://shared/network/NetDefaults.gd"
+"path": "res://shared/all/network/NetDefaults.gd"
 }, {
 "base": "Reference",
 "class": "NetUtils",
@@ -57,7 +52,6 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "CircularBuffer": "",
 "CmdLineArgs": "",
-"Handshake": "",
 "NetConstants": "",
 "NetDefaults": "",
 "NetUtils": "",
@@ -74,7 +68,8 @@ config/icon="res://icon.png"
 
 [autoload]
 
-GlobalState="*res://shared/state/GlobalState.tscn"
+Handshake="*res://shared/all/network/Handshake.gd"
+SyncRoot="*res://shared/all/state/SyncRoot.tscn"
 
 [input]
 
