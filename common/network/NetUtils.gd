@@ -32,3 +32,16 @@ static func get_master_id(node: Node) -> int:
 		return node.get_network_master()
 	else:
 		return NetConstants.UNNETWORKED_ID
+
+
+static func on_server_connected(node: Node, callback: String) -> void:
+	node.get_tree().connect("connected_to_server", node, callback)
+
+static func on_server_connection_failed(node: Node, callback: String) -> void:
+	node.get_tree().connect("connection_failed", node, callback)
+
+static func on_peer_connected(node: Node, callback: String) -> void:
+	node.get_tree().connect("network_peer_connected", node, callback)
+
+static func on_peer_disconnected(node: Node, callback: String) -> void:
+	node.get_tree().connect("network_peer_disconnected", node, callback)

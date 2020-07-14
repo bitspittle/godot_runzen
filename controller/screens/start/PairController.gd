@@ -9,8 +9,10 @@ func _ready():
 	_code_edit.grab_focus()
 	_status_label.text = ""
 
-	get_tree().connect("connected_to_server", self, "_connected_success")
-	get_tree().connect("connection_failed", self, "_connected_failure")
+	NetUtils.on_server_connected(self, "_connected_success")
+	NetUtils.on_server_connection_failed(self, "_connected_failure")
+
+	GlobalState.handshake.connect("pairing_succeeded", self, "_pairing_succeeded")
 
 	var client_scene = preload("res://shared/network/Client.tscn")
 	get_tree().get_root().add_child(client_scene.instance())
@@ -21,6 +23,9 @@ func _connected_success():
 func _connected_failure():
 	_status_label.text = "Connection rejected"
 
+func _on_CodeEdit_text_changed(new_text: String):
+	if new_text.length() == 5:
+		GlobalState.handshake.request_pairing(new_text.to_lower())
 
-func _on_CodeEdit_text_changed(new_text):
-	print(new_text)
+func _pairing_succeeded():
+	get_tree().change_scene("res://controller/screens/ControllerScreenMain.tscn")
