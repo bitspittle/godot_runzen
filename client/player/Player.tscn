@@ -3,8 +3,6 @@
 [ext_resource path="res://client/player/Player.gd" type="Script" id=1]
 [ext_resource path="res://controller/sensor/StepSensor.gd" type="Script" id=3]
 
-
-
 [sub_resource type="CapsuleMesh" id=1]
 radius = 0.5
 mid_height = 0.8
@@ -38,9 +36,6 @@ transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0.4,
 current = true
 fov = 68.1596
 near = 0.01
-
-[node name="RestTimer" type="Timer" parent="."]
-one_shot = true
 
 [node name="PathFollow" type="PathFollow" parent="."]
 rotation_mode = 4
@@ -83,5 +78,4 @@ text = "Steps / sec: %.1f
 [node name="UpdateUiTimer" type="Timer" parent="Control"]
 autostart = true
 [connection signal="half_step_taken" from="StepSensor" to="." method="_on_StepSensor_half_step_taken"]
-[connection signal="timeout" from="RestTimer" to="." method="_on_RestTimer_timeout"]
 [connection signal="timeout" from="Control/UpdateUiTimer" to="." method="_on_UpdateUiTimer_timeout"]

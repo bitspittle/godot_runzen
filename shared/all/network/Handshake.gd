@@ -8,7 +8,7 @@ signal pairing_succeeded()
 signal pairing_failed()
 
 master var codes = {} # Map of codes to client IDs
-master var client_controllers = {} # Map of controller IDs to client IDs
+master var controller_to_client = {} # Map of controller IDs to client IDs
 
 master func prepare_server():
 	randomize()
@@ -56,7 +56,7 @@ master func _request_pairing(from_id: int, code: String):
 	var succeeded = false
 	if codes.has(code):
 		var to_id = codes[code]
-		client_controllers[from_id] = to_id
+		controller_to_client[from_id] = to_id
 		print("Consuming code: ", code)
 		codes.erase(code)
 

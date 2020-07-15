@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://controller/sensor/StepSensor.gd" type="Script" id=1]
+[ext_resource path="res://controller/screens/ControllerMain.gd" type="Script" id=2]
+
+[node name="ControllerMain" type="Panel"]
+modulate = Color( 0, 0, 0, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StepSensor" type="Node" parent="."]
+script = ExtResource( 1 )
+
+[node name="RestTimer" type="Timer" parent="."]
+[connection signal="half_step_taken" from="StepSensor" to="." method="_on_StepSensor_half_step_taken"]
+[connection signal="timeout" from="RestTimer" to="." method="_on_RestTimer_timeout"]

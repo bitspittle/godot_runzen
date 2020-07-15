@@ -1,13 +1,18 @@
-# Top-level collection of game states, to be synced across clients, controllers,
-# and servers
-
 extends Node
 
-# Called when the node enters the scene tree for the first time.
+class_name ControllerState
+
+var id = 0
+
+onready var steps_per_sec: SyncDict = $StepsPerSec
+
 func _ready():
-	pass # Replace with function body.
+	if id == 0:
+		push_error("ID must be set before adding ControllerState")
 
+	if NetUtils.is_master(self):
+		steps_per_sec.restrict_to_ids = [1]
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _on_StepsPerSec_values_changed():
+	var client_id = Handshake.controller_to_client[id]
+	SyncRoot.find_client(client_id).steps_per_sec.value = steps_per_sec.value

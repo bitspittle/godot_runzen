@@ -29,4 +29,4 @@ func _on_CodeEdit_text_changed(new_text: String):
 		Handshake.request_pairing(new_text.to_lower())
 
 func _pairing_succeeded():
-	get_tree().change_scene("res://controller/screens/ControllerScreenMain.tscn")
+	get_tree().change_scene("res://controller/screens/ControllerMain.tscn")

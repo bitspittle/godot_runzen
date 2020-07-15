@@ -41,7 +41,7 @@ var _last_values = {}
 var _remaining_msec = 0.0
 
 # If set, only send updates to specific targets; else, everyone
-export var id_targets = []
+export var restrict_to_ids = []
 
 func _set_value(v):
 	self.values["_"] = v
@@ -63,22 +63,22 @@ func _process(delta):
 	if reliable:
 		if _last_values.hash() != values.hash():
 			_last_values = values.duplicate()
-			if id_targets.empty():
+			if restrict_to_ids.empty():
 				rpc("_receive", _create_payload())
 			else:
-				for id in id_targets:
-					rpc_id(id, "_recieve", _create_payload())
+				for id in restrict_to_ids:
+					rpc_id(id, "_receive", _create_payload())
 	else:
 		_remaining_msec -= delta
 		if _remaining_msec <= 0:
 			_remaining_msec = throttle_msec / 1000.0
 			if _last_values.hash() != values.hash():
 				_last_values = values.duplicate()
-				if id_targets.empty():
+				if restrict_to_ids.empty():
 					rpc_unreliable("_receive", _create_payload())
 				else:
-					for id in id_targets:
-						rpc_unreliable_id(id, "_recieve", _create_payload())
+					for id in restrict_to_ids:
+						rpc_unreliable_id(id, "_receive", _create_payload())
 
 func _create_payload():
 	return [OS.get_ticks_msec(), values]
@@ -91,4 +91,4 @@ puppet func _receive(payload) -> void:
 		values = other_values
 		if _last_values.hash() != values.hash():
 			_last_values = values.duplicate()
-			emit_signal("vaules_changed")
+			emit_signal("values_changed")
