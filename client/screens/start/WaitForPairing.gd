@@ -26,4 +26,5 @@ func _received_pairing_code(code: String) -> void:
 	_pairing_code_label.text = code
 
 func _pairing_succeeded() -> void:
+	SyncRoot.add_client(NetUtils.get_unique_id(self))
 	get_tree().change_scene("res://client/world/Island.tscn")

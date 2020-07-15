@@ -3,25 +3,32 @@ extends Node
 # A dictionary that gets synced regularly across a network connection
 
 # Prerequisite:
-# Create a SyncDict in your scene
+# * Create a SyncDict in your scene.
+# * Create the master copy before the puppet copy
 #
-# # From the master scene:
+# # SomeScene.gd
+#
 # onready var _data = $SyncedData
-# func some_func():
+#
+# func _ready():
+#	if !is_network_master():
+# 		# values_changed only triggered on puppet anyway, so avoid
+#		# unecessary connecting
+# 		_data.connect("values_changed", self, "_on_data_updated")
+#
+# func update_pos():
 #	if is_network_master():
 #		# Setting data on puppets is harmless but best avoided
-#		# to limit places the data gets set.
+#		# to limit places the data gets set, making debugging
+#		# easier.
 # 		_data.values["pos"] = position
 #
-# # From the puppet scene:
-# func _ready():
-# 	_data.connect("values_updated", self, "_on_data_updated")
-# func _on_data_updated(): # will only be triggered on puppet
+# func _on_data_updated():
 #	 position = _data.values["pos"]
 
 class_name SyncDict
 
-signal vaules_changed
+signal values_changed
 
 export var reliable = false
 export var throttle_msec = 30 # Ignored if reliable

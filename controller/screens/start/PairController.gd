@@ -10,7 +10,7 @@ func _ready():
 	_status_label.text = ""
 
 	NetUtils.on_server_connected(self, "_connected_success")
-	NetUtils.on_server_connection_failed(self, "_connected_failure")
+	NetUtils.on_server_rejected(self, "_connected_failure")
 
 	Handshake.connect("pairing_succeeded", self, "_pairing_succeeded")
 
@@ -19,6 +19,7 @@ func _ready():
 
 func _connected_success():
 	_status_label.text = "Connection successful"
+	SyncRoot.add_controller(NetUtils.get_unique_id(self))
 
 func _connected_failure():
 	_status_label.text = "Connection rejected"

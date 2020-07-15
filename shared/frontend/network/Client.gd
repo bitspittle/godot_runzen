@@ -13,6 +13,8 @@ extends Node
 var _client: WebSocketClient = null
 
 func _ready():
+	NetUtils.on_server_rejected(self, "_on_server_rejected")
+
 	var ip = CmdLineArgs.get_str_value("--ip")
 	var port = CmdLineArgs.get_int_value("--port")
 
@@ -39,3 +41,7 @@ func _process(delta):
 	if status == NetworkedMultiplayerPeer.CONNECTION_CONNECTED \
 	|| status == NetworkedMultiplayerPeer.CONNECTION_CONNECTING:
 		_client.poll()
+
+func _on_server_rejected():
+	# TODO: Better handling
+	get_tree().quit()

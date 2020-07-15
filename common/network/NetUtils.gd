@@ -37,7 +37,7 @@ static func get_master_id(node: Node) -> int:
 static func on_server_connected(node: Node, callback: String) -> void:
 	node.get_tree().connect("connected_to_server", node, callback)
 
-static func on_server_connection_failed(node: Node, callback: String) -> void:
+static func on_server_rejected(node: Node, callback: String) -> void:
 	node.get_tree().connect("connection_failed", node, callback)
 
 static func on_peer_connected(node: Node, callback: String) -> void:

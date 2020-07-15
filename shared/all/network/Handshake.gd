@@ -8,7 +8,7 @@ signal pairing_succeeded()
 signal pairing_failed()
 
 master var codes = {} # Map of codes to client IDs
-master var controllers = {} # Map of controller IDs to client IDs
+master var client_controllers = {} # Map of controller IDs to client IDs
 
 master func prepare_server():
 	randomize()
@@ -56,10 +56,12 @@ master func _request_pairing(from_id: int, code: String):
 	var succeeded = false
 	if codes.has(code):
 		var to_id = codes[code]
-		controllers[from_id] = to_id
+		client_controllers[from_id] = to_id
 		print("Consuming code: ", code)
 		codes.erase(code)
 
+		SyncRoot.add_controller(from_id)
+		SyncRoot.add_client(to_id)
 		for id in [from_id, to_id]:
 			rpc_id(id, "_pairing_succeeded")
 
@@ -71,3 +73,6 @@ puppet func _pairing_succeeded():
 
 puppet func _pairing_failed():
 	emit_signal("pairing_failed")
+
+master func create_controller_state(id: int):
+	SyncRoot.create_controller(id)
