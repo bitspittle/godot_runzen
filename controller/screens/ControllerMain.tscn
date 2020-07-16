@@ -1,13 +1,29 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://controller/sensor/StepSensor.gd" type="Script" id=1]
 [ext_resource path="res://controller/screens/ControllerMain.gd" type="Script" id=2]
+[ext_resource path="res://shared/frontend/assets/fonts/font_square_giant.tres" type="DynamicFont" id=3]
+[ext_resource path="res://shared/frontend/assets/themes/ui_theme.theme" type="Theme" id=4]
 
 [node name="ControllerMain" type="Panel"]
-modulate = Color( 0, 0, 0, 1 )
+self_modulate = Color( 0, 0, 0, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 4 )
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 60.0
+margin_top = 56.0
+margin_right = -62.0
+custom_fonts/font = ExtResource( 3 )
+text = "Do not turn off the screen"
+autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }

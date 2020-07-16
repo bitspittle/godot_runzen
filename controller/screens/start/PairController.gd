@@ -26,6 +26,7 @@ func _connected_failure():
 
 func _on_CodeEdit_text_changed(new_text: String):
 	if new_text.length() == 5:
+		OS.hide_virtual_keyboard()
 		Handshake.request_pairing(new_text.to_lower())
 
 func _pairing_succeeded():

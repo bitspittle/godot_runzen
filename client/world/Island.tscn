@@ -1,44 +1,29 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://client/world/Grass.tscn" type="PackedScene" id=1]
-[ext_resource path="res://client/world/Wall.tscn" type="PackedScene" id=2]
+[ext_resource path="res://default_env.tres" type="Environment" id=1]
+[ext_resource path="res://client/world/chunks/Chunk00_00.tscn" type="PackedScene" id=2]
 [ext_resource path="res://client/player/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://client/world/Island.gd" type="Script" id=4]
 
-
-
 [sub_resource type="Curve3D" id=1]
 _data = {
-"points": PoolVector3Array( -1.28908, 0, -3.4706, 1.28908, 0, 3.4706, -3.11654, 0, 7.42524, -0.793282, 0, -3.76808, 0.793282, 0, 3.76808, 2.80001, 0, 10.2017, -0.561909, 0, -3.14007, 0.561909, 0, 3.14007, -2.68685, 0, 13.8706, -0.462749, 0, -3.07396, 0.462749, 0, 3.07396, 3.42803, 0, 15.953, -0.760227, 0, -3.33839, 0.760227, 0, 3.33839, -1.43082, 0, 20.1177, 0, 0, 0, 0, 0, 0, 5.34512, 0, 21.6051, -3.33839, 0, 4.75968, 3.33839, 0, -4.75968, 17.6079, 0, 16.1844, 1.05771, 0, 2.61122, -1.05771, 0, -2.61122, 19.2275, 0, 1.47564, 4.26389, 0, 1.81793, -4.26389, 0, -1.81793, 12.3524, 0, -10.9194, 0.0330544, 0, -2.74343, -0.0330544, 0, 2.74343, 2.63474, 0, -8.40732, 0, 0, 0, 0, 0, 0, -0.141742, 0, -0.110925, -1.61961, 0, -5.42075, 1.61961, 0, 5.42075, -3.11654, 0, 7.42524 ),
-"tilts": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+"points": PoolVector3Array( 0, 0, 0, 0, 0, 0, -99.9808, 0, 99.9378, 0, 0, 0, 0, 0, 0, -101.636, 0, -92.7221, 0, 0, 0, 0, 0, 0, -28.1175, 0, -94.8497, 0, 0, 0, 0, 0, 0, -28.3539, 0, -27.005, 0, 0, 0, 0, 0, 0, 2.14077, 0, -13.0578, 0, 0, 0, 0, 0, 0, 77.3136, 0, -61.0455, 0, 0, 0, 0, 0, 0, 118.209, 0, 10.1086, 0, 0, 0, 0, 0, 0, 124.592, 0, 41.5488, 0, 0, 0, 0, 0, 0, 107.572, 0, 85.9906, 0, 0, 0, 0, 0, 0, 70.6946, 0, 51.0045, 0, 0, 0, 0, 0, 0, 44.455, 0, 28.0745, 0, 0, 0, 0, 0, 0, 40.9091, 0, 55.0232, 0, 0, 0, 0, 0, 0, 57.9294, 0, 93.7916, 0, 0, 0, 0, 0, 0, -2.5871, 0, 113.412, 0, 0, 0, 0, 0, 0, -33.5545, 0, 76.2986, 0, 0, 0, 0, 0, 0, -20.5529, 0, 41.3124, 0, 0, 0, 0, 0, 0, -50.5748, 0, 26.4197, 0, 0, 0, 0, 0, 0, -64.0492, 0, 79.1353 ),
+"tilts": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 }
 
 [node name="Island" type="Spatial"]
 script = ExtResource( 4 )
 
-[node name="TestPath" type="Path" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
-curve = SubResource( 1 )
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource( 1 )
 
-[node name="Grass" parent="." instance=ExtResource( 1 )]
-
-[node name="Players" type="Node" parent="."]
+[node name="Players" type="Spatial" parent="."]
 
 [node name="Player" parent="Players" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.3867, 0 )
 
-[node name="Walls" type="Node" parent="."]
+[node name="Chunk00_00" parent="." instance=ExtResource( 2 )]
 
-[node name="WallN" parent="Walls" instance=ExtResource( 2 )]
-transform = Transform( 40, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -40 )
-
-[node name="WallS" parent="Walls" instance=ExtResource( 2 )]
-transform = Transform( 40, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 40 )
-
-[node name="WallE" parent="Walls" instance=ExtResource( 2 )]
-transform = Transform( -6.51683e-06, 0, 1, 0, 1, 0, -40, 0, -1.62921e-07, 40.0165, 4.03201, 0.0284081 )
-
-[node name="WallW" parent="Walls" instance=ExtResource( 2 )]
-transform = Transform( -6.51683e-06, 0, 1, 0, 1, 0, -40, 0, -1.62921e-07, -40, 4, 0 )
-
-[node name="Trees" type="Node" parent="."]
+[node name="Path" type="Path" parent="Chunk00_00"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 25, 0 )
+curve = SubResource( 1 )

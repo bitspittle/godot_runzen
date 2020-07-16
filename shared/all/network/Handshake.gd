@@ -31,13 +31,8 @@ puppet func request_pairing_code():
 master func _request_pairing_code(from_id: int) -> void:
 	var code = ""
 	for i in range(5):
-		var letter_or_digit = randi() % 36
-		if letter_or_digit < 10:
-			var digit = letter_or_digit
-			code += str(digit)
-		else:
-			var letter = letter_or_digit - 10
-			code += char(_CHAR_CODE_A + letter)
+		var letter = randi() % 26
+		code += char(_CHAR_CODE_A + letter)
 
 	print("Generated code \"", code, "\" for id: ", from_id)
 	codes[code] = from_id

@@ -83,6 +83,10 @@ config/icon="res://icon.png"
 Handshake="*res://shared/all/network/Handshake.gd"
 SyncRoot="*res://shared/all/state/SyncRoot.tscn"
 
+[editor]
+
+main_run_args="--local"
+
 [input]
 
 debug_player_step_increase={
