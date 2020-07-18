@@ -17,7 +17,7 @@ transform = Transform( 1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0.6, 0 )
 shape = SubResource( 1 )
 
 [node name="EyeCamera" type="Camera" parent="."]
-transform = Transform( -1, -8.14603e-07, 2.26607e-15, -7.86846e-07, 0.965926, 0.258819, -2.10835e-07, 0.258819, -0.965926, 0, 1.55588, -2.0273 )
+transform = Transform( -1, -8.14603e-07, 3.14017e-13, -8.146e-07, 0.999996, -0.00291479, 2.37408e-09, -0.00291479, -0.999996, 0, 0.995341, 0.17864 )
 current = true
 fov = 68.1596
 near = 0.01

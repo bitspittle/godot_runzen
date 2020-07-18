@@ -33,7 +33,6 @@ func _set_current_path(path: Path):
 func _snap_to_follow(immediate_rotation: bool = false):
 	translation.x = _follow.translation.x
 	translation.z = _follow.translation.z
-	print(_ground_detector.get_collision_point())
 	translation.y = _ground_detector.get_collision_point().y
 
 	if immediate_rotation:
@@ -50,7 +49,7 @@ func _snap_to_follow(immediate_rotation: bool = false):
 		else:
 			rotation_target -= (2.0 * PI - angle_diff)
 
-		_rotation_tween.interpolate_property(self, "rotation:y", rotation.y,rotation_target, 1.0, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		_rotation_tween.interpolate_property(self, "rotation:y", rotation.y,rotation_target, 0.6, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 		_rotation_tween.start()
 
 func _steps_per_sec():
