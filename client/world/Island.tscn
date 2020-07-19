@@ -4,12 +4,7 @@
 [ext_resource path="res://client/world/chunks/Chunk00_00.tscn" type="PackedScene" id=2]
 [ext_resource path="res://client/player/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://client/world/Island.gd" type="Script" id=4]
-
-[sub_resource type="Curve3D" id=1]
-_data = {
-"points": PoolVector3Array( 0, 0, 0, 0, 0, 0, 104.739, -0.0240326, 54.7598, 0, 0, 0, 0, 0, 0, 73, 0, 85, 0, 0, 0, 0, 0, 0, 41, 0, 91, 0, 0, 0, 0, 0, 0, 27, 0, 106, 0, 0, 0, 0, 0, 0, -12, 0, 104, 0, 0, 0, 0, 0, 0, -32, -2, 90, 0, 0, 0, 0, 0, 0, -45, -1, 54, 0, 0, 0, 0, 0, 0, -47, 0, 17, 0, 0, 0, 0, 0, 0, -20, 0, -15, 0, 0, 0, 0, 0, 0, 5, 0, -27, 0, 0, 0, 0, 0, 0, 30, 0, -44, 0, 0, 0, 0, 0, 0, 80, 0, -47, 0, 0, 0, 0, 0, 0, 94, 0, -27, 0, 0, 0, 0, 0, 0, 103, 0, -21, 0, 0, 0, 0, 0, 0, 104.8, 0.00396729, 19.0619, 0, 0, 0, 0, 0, 0, 104.739, -0.0240326, 54.7598 ),
-"tilts": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
-}
+[ext_resource path="res://shared/frontend/assets/models/paths/Reference.tres" type="Curve3D" id=5]
 
 [node name="Island" type="Spatial"]
 script = ExtResource( 4 )
@@ -25,5 +20,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.3867, 0 )
 [node name="Chunk00_00" parent="." instance=ExtResource( 2 )]
 
 [node name="Path" type="Path" parent="Chunk00_00"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 25, 0 )
-curve = SubResource( 1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 57, 0 )
+curve = ExtResource( 5 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, -12, 69.6, 178 )
+far = 1333.0
