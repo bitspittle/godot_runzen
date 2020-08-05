@@ -29,14 +29,22 @@ puppet func request_pairing_code():
 		rpc_id(NetConstants.SERVER_ID, "_request_pairing_code", NetUtils.get_unique_id(self))
 
 master func _request_pairing_code(from_id: int) -> void:
-	var code = ""
-	for i in range(5):
-		var letter = randi() % 26
-		code += char(_CHAR_CODE_A + letter)
+	var code = 0
+	for i in range(6):
+		var digit = 0
+		if i == 0:
+			digit = 1 + randi() % 9
+		else:
+			digit = randi() % 10
 
-	print("Generated code \"", code, "\" for id: ", from_id)
-	codes[code] = from_id
-	rpc_id(from_id, "_receive_pairing_code", code)
+		code *= 10
+		code += digit
+
+	var code_str = str(code)
+
+	print("Generated code \"", code_str, "\" for id: ", from_id)
+	codes[code_str] = from_id
+	rpc_id(from_id, "_receive_pairing_code", code_str)
 
 puppet func _receive_pairing_code(code: String) -> void:
 	emit_signal("received_pairing_code", code)
