@@ -1,6 +1,6 @@
 extends Spatial
 
-onready var _player = $Players/Player
+onready var _player = $Player
 
 func _ready():
-	_player.current_path = $Chunk00_00/Path
+	_player.current_path = $Path

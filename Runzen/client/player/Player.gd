@@ -9,7 +9,8 @@ var current_path: Path = null setget _set_current_path
 
 onready var _follow = $PathFollow
 
-onready var _camera = $EyeCamera
+onready var _camera = $Eye/EyeCamera
+onready var _camera_parent = $Eye
 onready var _mph_label = $Control/Panel/MphLabel
 onready var _steps_label = $Control/Panel/StepsLabel
 onready var _mph_label_format = _mph_label.text
@@ -17,7 +18,6 @@ onready var _steps_label_format = _steps_label.text
 
 onready var _client = SyncRoot.find_client(NetUtils.get_unique_id(self))
 onready var _ground_detector = $GroundDetector
-onready var _rotation_tween = $RotationTween
 
 func _ready():
 	_update_ui()
@@ -25,36 +25,17 @@ func _ready():
 func _set_current_path(path: Path):
 	current_path = path
 
-	print(current_path.curve.get_point_count())
-
 	_follow.get_parent().remove_child(_follow)
 	current_path.add_child(_follow)
 	_follow.offset = 0.0001 # Force follow to snap after adding
-	_snap_to_follow(true)
+	_snap_to_follow()
 
-func _snap_to_follow(immediate_rotation: bool = false):
-#	translation.x = _follow.translation.x
-#	translation.z = _follow.translation.z
-#	translation.y = _ground_detector.get_collision_point().y
-#
-#	if immediate_rotation:
-#		rotation.y = _follow.rotation.y
-#	elif rotation.y != _follow.rotation.y && !_rotation_tween.is_active():
-#		var angle_diff = _follow.rotation.y - rotation.y
-#		if angle_diff < 0.0:
-#			angle_diff += (2.0 * PI)
-#
-#		var rotation_target = rotation.y
-#		if angle_diff <= PI:
-#			# Turn left
-#			rotation_target += angle_diff
-#		else:
-#			rotation_target -= (2.0 * PI - angle_diff)
-#
-#		_rotation_tween.interpolate_property(self, "rotation:y", rotation.y,rotation_target, 0.6, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-#		_rotation_tween.start()
-	translation = _follow.translation
-	rotation = _follow.rotation
+func _snap_to_follow():
+	translation.x = _follow.translation.x
+	translation.z = _follow.translation.z
+	if _ground_detector.is_colliding():
+		translation.y = _ground_detector.get_collision_point().y
+	_camera_parent.rotation.y = _follow.rotation.y + (PI/2)
 
 func _steps_per_sec():
 	if _client == null: return 20.0

@@ -3,5 +3,12 @@
 [sub_resource type="ProceduralSky" id=1]
 
 [resource]
-background_mode = 2
+background_mode = 1
 background_sky = SubResource( 1 )
+background_sky_custom_fov = 120.0
+background_color = Color( 0.52549, 0.815686, 0.87451, 1 )
+tonemap_mode = 2
+ssao_quality = 2
+ssao_blur = 1
+glow_intensity = 0.39
+glow_bloom = 0.27
