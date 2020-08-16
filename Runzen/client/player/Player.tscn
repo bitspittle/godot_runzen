@@ -6,11 +6,11 @@
 radius = 0.25
 height = 0.7
 
-[sub_resource type="SpatialMaterial" id=3]
+[sub_resource type="SpatialMaterial" id=2]
 albedo_color = Color( 0.67451, 0.882353, 0.105882, 1 )
 
-[sub_resource type="CapsuleMesh" id=2]
-material = SubResource( 3 )
+[sub_resource type="CapsuleMesh" id=3]
+material = SubResource( 2 )
 radial_segments = 8
 rings = 4
 
@@ -72,6 +72,6 @@ far = 5000.0
 
 [node name="Body" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 1, 0 )
-mesh = SubResource( 2 )
+mesh = SubResource( 3 )
 material/0 = null
 [connection signal="timeout" from="Control/UpdateUiTimer" to="." method="_on_UpdateUiTimer_timeout"]

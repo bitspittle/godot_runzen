@@ -1,6 +1,7 @@
 extends KinematicBody
 
 const METERS_PER_STEP = 0.7
+const _DEBUG_STEPS_PER_SEC = 10.0
 
 var _elapsed = 0.0
 var _distance = 0.0
@@ -23,11 +24,50 @@ func _ready():
 	_update_ui()
 
 func _set_current_path(path: Path):
-	current_path = path
+	if current_path != null:
+		current_path.enqueue_free()
+
+	# Make our own copy of the path and autocalculate curves
+	current_path = Path.new()
+	current_path.curve = Curve3D.new()
+
+	for i in path.curve.get_point_count():
+		var beforei = i - 1
+		if beforei < 0:
+			beforei += path.curve.get_point_count()
+		var afteri = i + 1
+		if afteri == path.curve.get_point_count():
+			afteri = 0
+
+		var curr = path.curve.get_point_position(i)
+		var before = path.curve.get_point_position(beforei)
+		var after = path.curve.get_point_position(afteri)
+
+		var after_delta = (after - curr)
+		var before_delta = (before - curr)
+		var avg = ((after_delta.normalized() + before_delta.normalized()) / 2.0).normalized()
+
+		var is_right_turn = (before_delta.cross(after_delta).y) >= 0
+
+		var turn_angle = PI / 2.0
+		if !is_right_turn:
+			turn_angle = -turn_angle
+
+		var smaller_delta = after_delta
+		if (after_delta.length_squared() > before_delta.length_squared()):
+			smaller_delta = before_delta
+
+		var control_out = avg.rotated(Vector3.UP, turn_angle).normalized() * (smaller_delta.length() / 5.0)
+		var control_in = -control_out
+
+		current_path.curve.add_point(path.curve.get_point_position(i), control_in, control_out)
+
+	# Close the loop!
+	current_path.curve.add_point(current_path.curve.get_point_position(0), current_path.curve.get_point_in(0), current_path.curve.get_point_out(0))
+	path.get_parent().add_child(current_path)
 
 	_follow.get_parent().remove_child(_follow)
 	current_path.add_child(_follow)
-	_follow.offset = 0.0001 # Force follow to snap after adding
 	_snap_to_follow()
 
 func _snap_to_follow():
@@ -38,7 +78,7 @@ func _snap_to_follow():
 	_camera_parent.rotation.y = _follow.rotation.y + (PI/2)
 
 func _steps_per_sec():
-	if _client == null: return 20.0
+	if _client == null: return _DEBUG_STEPS_PER_SEC
 	return _client.steps_per_sec.value
 
 func _physics_process(delta):

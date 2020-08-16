@@ -1,0 +1,6 @@
+[gd_scene format=2]
+
+[node name="Environment" type="Spatial"]
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.684522, 0.728993, 0, -0.728993, 0.684522, 0, 482.183, 0 )
