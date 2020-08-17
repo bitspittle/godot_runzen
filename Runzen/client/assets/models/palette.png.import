@@ -4,15 +4,16 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/palette.png-b3ce295934d21e279b25f845e9b5dfb3.s3tc.stex"
 path.etc2="res://.import/palette.png-b3ce295934d21e279b25f845e9b5dfb3.etc2.stex"
+path.etc="res://.import/palette.png-b3ce295934d21e279b25f845e9b5dfb3.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
+"imported_formats": [ "s3tc", "etc2", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://client/assets/models/palette.png"
-dest_files=[ "res://.import/palette.png-b3ce295934d21e279b25f845e9b5dfb3.s3tc.stex", "res://.import/palette.png-b3ce295934d21e279b25f845e9b5dfb3.etc2.stex" ]
+dest_files=[ "res://.import/palette.png-b3ce295934d21e279b25f845e9b5dfb3.s3tc.stex", "res://.import/palette.png-b3ce295934d21e279b25f845e9b5dfb3.etc2.stex", "res://.import/palette.png-b3ce295934d21e279b25f845e9b5dfb3.etc.stex" ]
 
 [params]
 
