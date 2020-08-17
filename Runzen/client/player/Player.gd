@@ -10,8 +10,8 @@ var current_path: Path = null setget _set_current_path
 
 onready var _follow = $PathFollow
 
-onready var _camera = $Eye/EyeCamera
-onready var _camera_parent = $Eye
+onready var _pivot = $Pivot
+onready var _camera = $Pivot/Eye/EyeCamera
 onready var _mph_label = $Control/Panel/MphLabel
 onready var _steps_label = $Control/Panel/StepsLabel
 onready var _mph_label_format = _mph_label.text
@@ -70,12 +70,23 @@ func _set_current_path(path: Path):
 	current_path.add_child(_follow)
 	_snap_to_follow()
 
+func _align_with_y(xform, new_y):
+	# See also: https://kidscancode.org/godot_recipes/3d/3d_align_surface/
+	xform.basis.y = new_y
+	xform.basis.x = -xform.basis.z.cross(new_y)
+	xform.basis = xform.basis.orthonormalized()
+	return xform
+
 func _snap_to_follow():
 	translation.x = _follow.translation.x
 	translation.z = _follow.translation.z
 	if _ground_detector.is_colliding():
 		translation.y = _ground_detector.get_collision_point().y
-	_camera_parent.rotation.y = _follow.rotation.y + (PI/2)
+		var ground_normal = _ground_detector.get_collision_normal()
+		_camera.global_transform = _camera.global_transform.interpolate_with(_align_with_y(_camera.global_transform, ground_normal), 0.02)
+		_camera.rotation = Vector3(_camera.rotation.x, 0.0, 0.0)
+
+	_pivot.rotation.y = _follow.rotation.y + (PI / 2)
 
 func _steps_per_sec():
 	if _client == null: return _DEBUG_STEPS_PER_SEC
