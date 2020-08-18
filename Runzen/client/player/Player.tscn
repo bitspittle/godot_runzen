@@ -28,6 +28,9 @@ rotation_mode = 4
 transform = Transform( 1, 0, 0, 0, 1000, 0, 0, 0, 1, 0, 10, 0 )
 enabled = true
 
+[node name="GroundOrientation" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1000, 0, 0, 0, 1, 0, 10, 0 )
+
 [node name="Control" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
