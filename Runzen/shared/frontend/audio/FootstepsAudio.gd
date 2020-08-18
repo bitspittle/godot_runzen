@@ -1,8 +1,5 @@
 extends Node
 
-onready var _footsteps_player_l = $Left
-onready var _footsteps_player_r = $Right
-onready var _footsteps_countdown = $StepCountdown
 var _footstep_sounds = [
 	load("res://shared/frontend/assets/sounds/step_grass_1.wav"),
 	load("res://shared/frontend/assets/sounds/step_grass_2.wav"),

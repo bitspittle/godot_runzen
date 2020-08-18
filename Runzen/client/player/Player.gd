@@ -111,7 +111,9 @@ func _physics_process(delta):
 		
 		if _footsteps_countdown.is_stopped():
 			_footsteps.step()
-			_footsteps_countdown.start(1.0 / steps_per_sec)
+			# Too many steps sounds chaotic
+			var clamped_steps_per_sec = min(steps_per_sec, 5)
+			_footsteps_countdown.start(1.0 / clamped_steps_per_sec)
 	else:
 		_footsteps_countdown.stop()
 
