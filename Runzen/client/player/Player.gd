@@ -98,8 +98,8 @@ func _snap_to_follow():
 		# Have camera's x rotation (looking up or down) align with the ground
 		# e.g. on an upslope, look up
 		var ground_normal = _ground_detector.get_collision_normal()
-		_ground_orientation.global_transform = _ground_orientation.global_transform.interpolate_with(_align_with_y(_ground_orientation.global_transform, ground_normal), 0.02)
-		_camera.rotation = Vector3(-_ground_orientation.rotation.x, 0.0, 0.0)
+		_camera.global_transform = _camera.global_transform.interpolate_with(_align_with_y(_camera.global_transform, ground_normal), 0.02)
+		_camera.rotation = Vector3(_camera.rotation.x, 0.0, 0.0)
 
 	_pivot.rotation.y = _follow.rotation.y + (PI / 2)
 
