@@ -1,10 +1,10 @@
 extends Node
 
 var _footstep_sounds = [
-	load("res://shared/frontend/assets/sounds/step_grass_1.wav"),
-	load("res://shared/frontend/assets/sounds/step_grass_2.wav"),
-	load("res://shared/frontend/assets/sounds/step_grass_3.wav"),
-	load("res://shared/frontend/assets/sounds/step_grass_4.wav")
+	load("res://client/assets/sounds/step_grass_1.wav"),
+	load("res://client/assets/sounds/step_grass_2.wav"),
+	load("res://client/assets/sounds/step_grass_3.wav"),
+	load("res://client/assets/sounds/step_grass_4.wav")
 ]
 
 const _NUM_AUDIO_PLAYERS = 6

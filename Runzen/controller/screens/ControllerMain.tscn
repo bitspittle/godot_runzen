@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://controller/sensor/StepSensor.gd" type="Script" id=1]
 [ext_resource path="res://controller/screens/ControllerMain.gd" type="Script" id=2]
 [ext_resource path="res://shared/frontend/assets/fonts/font_square_giant.tres" type="DynamicFont" id=3]
 [ext_resource path="res://shared/frontend/assets/themes/ui_theme.theme" type="Theme" id=4]
-[ext_resource path="res://shared/frontend/audio/FootstepsAudio.tscn" type="PackedScene" id=5]
 
 [node name="ControllerMain" type="Panel"]
 self_modulate = Color( 0, 0, 0, 1 )
@@ -33,7 +32,5 @@ __meta__ = {
 script = ExtResource( 1 )
 
 [node name="RestTimer" type="Timer" parent="."]
-
-[node name="FootstepsAudio" parent="." instance=ExtResource( 5 )]
 [connection signal="half_step_taken" from="StepSensor" to="." method="_on_StepSensor_half_step_taken"]
 [connection signal="timeout" from="RestTimer" to="." method="_on_RestTimer_timeout"]

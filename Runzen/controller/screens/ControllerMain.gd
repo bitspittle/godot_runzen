@@ -11,7 +11,6 @@ var _elapsed = 0.0
 
 onready var _rest_timer = $RestTimer
 onready var _controller = SyncRoot.find_controller(NetUtils.get_unique_id(self))
-onready var _footsteps = $FootstepsAudio
 
 func _ready():
 	_rest_timer.wait_time = REST_SECS
@@ -31,7 +30,6 @@ func _prune_old_steps():
 func _on_StepSensor_half_step_taken(magnitude):
 	_half_steps_buffer.append([_elapsed, magnitude])
 	_rest_timer.start()
-	_footsteps.step()
 
 func _calc_steps_per_sec() -> float:
 	return (_half_steps_buffer.size() / 2.0) / PERIOD_SECS
