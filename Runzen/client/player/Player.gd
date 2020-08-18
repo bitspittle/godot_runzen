@@ -1,7 +1,7 @@
 extends KinematicBody
 
 const METERS_PER_STEP = 0.7
-const _DEBUG_STEPS_PER_SEC = 3
+var _debug_steps_per_sec = 3
 
 var _elapsed = 0.0
 var _distance = 0.0
@@ -27,6 +27,11 @@ onready var _footsteps_countdown = $FootstepsAudio/Countdown
 
 func _ready():
 	_update_ui()
+
+func _process(delta):
+	for i in 10:
+		if Input.is_key_pressed(KEY_0 + i):
+			_debug_steps_per_sec = i
 
 func _set_current_path(path: Path):
 	if current_path != null:
@@ -97,7 +102,7 @@ func _snap_to_follow():
 	_pivot.rotation.y = _follow.rotation.y + (PI / 2)
 
 func _steps_per_sec():
-	if _client == null: return _DEBUG_STEPS_PER_SEC
+	if _client == null: return _debug_steps_per_sec
 	return _client.steps_per_sec.value
 
 func _physics_process(delta):
