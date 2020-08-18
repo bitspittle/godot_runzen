@@ -1,7 +1,7 @@
 extends KinematicBody
 
 const METERS_PER_STEP = 0.7
-const _DEBUG_STEPS_PER_SEC = 100
+const _DEBUG_STEPS_PER_SEC = 3
 
 var _elapsed = 0.0
 var _distance = 0.0
@@ -22,15 +22,8 @@ onready var _client = SyncRoot.find_client(NetUtils.get_unique_id(self))
 onready var _ground_detector = $GroundDetector
 onready var _ground_orientation = $GroundOrientation
 
-onready var _footsteps_player_l = $Footsteps/Left
-onready var _footsteps_player_r = $Footsteps/Right
-onready var _footsteps_countdown = $Footsteps/StepCountdown
-var _footstep_sounds = [
-	load("res://client/assets/sounds/step_grass_1.wav"),
-	load("res://client/assets/sounds/step_grass_2.wav"),
-	load("res://client/assets/sounds/step_grass_3.wav"),
-	load("res://client/assets/sounds/step_grass_4.wav")
-]
+onready var _footsteps = $FootstepsAudio
+onready var _footsteps_countdown = $FootstepsAudio/Countdown
 
 func _ready():
 	_update_ui()
@@ -115,31 +108,12 @@ func _physics_process(delta):
 		_snap_to_follow()
 		var vel = Vector3(0.0, -9.8, 0.0)
 		vel = move_and_collide(vel * delta)
+		
 		if _footsteps_countdown.is_stopped():
-			_step()
+			_footsteps.step()
+			_footsteps_countdown.start(1.0 / steps_per_sec)
 	else:
-		_stop_stepping()
-
-func _stop_stepping():
 		_footsteps_countdown.stop()
-		# Let any in progress sounds keep going
-
-func _step():
-	var steps_per_sec = _steps_per_sec()
-	steps_per_sec = min(steps_per_sec, 6)
-	
-	if steps_per_sec > 0:
-		var next_player = _footsteps_player_l
-		if _footsteps_player_l.playing && !_footsteps_player_r.playing:
-			next_player = _footsteps_player_r
-
-		_footsteps_countdown.start(1.0 / steps_per_sec)
-		next_player.stream = _footstep_sounds[randi() % _footstep_sounds.size()]
-		var scale = steps_per_sec / 2.0
-		next_player.pitch_scale = rand_range(scale - 0.1, scale + 0.1)
-		next_player.play()
-	else:
-		_stop_stepping()
 
 func _update_ui():
 	var miles = _distance * 0.000621371
@@ -150,4 +124,4 @@ func _on_UpdateUiTimer_timeout():
 	_update_ui()
 
 func _on_StepCountdown_timeout():
-	_step()
+	_footsteps.step()

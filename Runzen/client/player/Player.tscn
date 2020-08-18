@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://client/player/Player.gd" type="Script" id=1]
+[ext_resource path="res://shared/frontend/audio/FootstepsAudio.tscn" type="PackedScene" id=2]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.25
@@ -79,12 +80,8 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.12905, -0.170032 )
 current = true
 far = 5000.0
 
-[node name="Footsteps" type="Node" parent="."]
+[node name="FootstepsAudio" parent="." instance=ExtResource( 2 )]
 
-[node name="Left" type="AudioStreamPlayer" parent="Footsteps"]
-
-[node name="Right" type="AudioStreamPlayer" parent="Footsteps"]
-
-[node name="StepCountdown" type="Timer" parent="Footsteps"]
+[node name="Countdown" type="Timer" parent="FootstepsAudio"]
+one_shot = true
 [connection signal="timeout" from="Control/UpdateUiTimer" to="." method="_on_UpdateUiTimer_timeout"]
-[connection signal="timeout" from="Footsteps/StepCountdown" to="." method="_on_StepCountdown_timeout"]
