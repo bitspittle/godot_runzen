@@ -1,7 +1,7 @@
 extends KinematicBody
 
 const METERS_PER_STEP = 0.7
-var _debug_steps_per_sec = 3
+var _debug_steps_per_sec = 0
 
 var _elapsed = 0.0
 var _distance = 0.0
