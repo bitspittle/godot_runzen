@@ -1,7 +1,7 @@
 extends KinematicBody
 
 const METERS_PER_STEP = 0.7
-var _debug_steps_per_sec = 0
+var _debug_steps_per_sec = 100
 
 var _elapsed = 0.0
 var _distance = 0.0
@@ -96,7 +96,7 @@ func _snap_to_follow():
 		# Have camera's x rotation (looking up or down) align with the ground
 		# e.g. on an upslope, look up
 		var ground_normal = _ground_detector.get_collision_normal()
-		_camera.global_transform = _camera.global_transform.interpolate_with(_align_with_y(_camera.global_transform, ground_normal), 0.02)
+		_camera.global_transform = _camera.global_transform.interpolate_with(_align_with_y(_camera.global_transform, ground_normal), 0.01)
 		_camera.rotation = Vector3(_camera.rotation.x, 0.0, 0.0)
 
 	_pivot.rotation.y = _follow.rotation.y + (PI / 2)

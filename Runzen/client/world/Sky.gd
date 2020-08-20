@@ -12,9 +12,10 @@ var _TIME_NOON = 0.0
 var _TIME_PRE_DUSK = _to_time(5)
 var _TIME_DUSK = _to_time(6)
 var _TIME_NIGHT = _to_time(9)
+var _TIME_MIDNIGHT = _to_time(12)
 var _TIME_MORNING = _to_time(18)
 
-const _TIME_ELAPSED_MULTIPLIER = 60.0 * 60.0 # Every real second, this may seconds pass in game
+const _TIME_ELAPSED_MULTIPLIER = 60 * 60.0 # Every real second, this may seconds pass in game
 
 static func _to_time(hour: int) -> float:
 	return hour * 60.0 * 60.0
@@ -39,11 +40,6 @@ func _process(delta):
 		sky_color = _SKY_COLOR_NIGHT.linear_interpolate(_SKY_COLOR_NOON, (_time_of_day - _TIME_MORNING) / (_MAX_TIME_OF_DAY - _TIME_MORNING))
 		
 	get_world().fallback_environment.background_color = sky_color
-#	_pivot.rotate_z(0.5 * delta)
-#
-#	var i = _pivot.rotation.z * 128
-#
-#	var new_color = Color(i / 255.0, 0.0, 0.0)
-#	print(new_color)
-#	_pivot.get_world().fallback_environment.background_color = new_color
-	
+	var energy_scale = abs(_time_of_day - _TIME_MIDNIGHT) / _TIME_MIDNIGHT
+	get_world().fallback_environment.ambient_light_energy = 0.2 * energy_scale
+	get_world().fallback_environment.background_energy = 1.0 * energy_scale
