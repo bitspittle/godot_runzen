@@ -108,7 +108,10 @@ func _steps_per_sec():
 func _physics_process(delta):
 	var steps_per_sec = _steps_per_sec()
 	if steps_per_sec > 0:
-		_distance += steps_per_sec * METERS_PER_STEP * delta
+		# The steeper the ground, the slower the player moves
+		var ground_slope = _camera.rotation.x
+		_distance += cos(ground_slope) * steps_per_sec * METERS_PER_STEP * delta
+
 		_follow.offset = _distance
 		_snap_to_follow()
 		var vel = Vector3(0.0, -9.8, 0.0)
