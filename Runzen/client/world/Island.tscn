@@ -6,12 +6,7 @@
 [ext_resource path="res://client/world/Island.gd" type="Script" id=4]
 [ext_resource path="res://client/world/Sky.tscn" type="PackedScene" id=5]
 [ext_resource path="res://client/world/Water.tscn" type="PackedScene" id=6]
-
-[sub_resource type="Curve3D" id=1]
-_data = {
-"points": PoolVector3Array( 0, 0, 0, 0, 0, 0, -244.069, 0.219849, -226.379, 0, 0, 0, 0, 0, 0, -228.965, 0.464966, -546.102, 0, 0, 0, 0, 0, 0, -110.207, 0.567871, -706.549, 0, 0, 0, 0, 0, 0, -8.5191, 0.55603, -715.1, 0, 0, 0, 0, 0, 0, 14.8556, 0.620605, -803.878, 0, 0, 0, 0, 0, 0, 120, 1, -830, 0, 0, 0, 0, 0, 0, 213, 1, -797, 0, 0, 0, 0, 0, 0, 317, 0, -670, 0, 0, 0, 0, 0, 0, 508.268, 0, -530.591, 0, 0, 0, 0, 0, 0, 518.725, -61, -409.291, 0, 0, 0, 0, 0, 0, 255.677, -153.484, 713.254, 0, 0, 0, 0, 0, 0, -48.1969, -153.484, 893.256, 0, 0, 0, 0, 0, 0, -170.134, -153.484, 757.77, 0, 0, 0, 0, 0, 0, -110.133, -153.484, 703.576, 0, 0, 0, 0, 0, 0, 213.096, -153.484, 564.22, 0, 0, 0, 0, 0, 0, 280.838, -153.484, 107.442, 0, 0, 0, 0, 0, 0, -4.42358, -153.484, -172.116, 0, 0, 0, 0, 0, 0, -145.118, -153.484, -172.135 ),
-"tilts": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
-}
+[ext_resource path="res://client/assets/paths/Path00.tres" type="Curve3D" id=7]
 
 [node name="Island" instance=ExtResource( 1 )]
 script = ExtResource( 4 )
@@ -24,13 +19,15 @@ transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 152.628
 [node name="Water" parent="." index="3" instance=ExtResource( 6 )]
 
 [node name="Path" type="Path" parent="." index="4"]
-curve = SubResource( 1 )
+curve = ExtResource( 7 )
 
 [node name="CinematicCamera" type="Camera" parent="." index="5"]
 transform = Transform( 1, 0, 0, 0, 0.998645, -0.0520397, 0, 0.0520397, 0.998645, 1, 73, 252 )
-current = true
 fov = 42.4723
 far = 10000.0
 
 [node name="Land" parent="." index="6"]
+material/0 = ExtResource( 3 )
+
+[node name="Bridge" parent="." index="7"]
 material/0 = ExtResource( 3 )

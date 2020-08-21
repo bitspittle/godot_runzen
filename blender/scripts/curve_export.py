@@ -41,31 +41,30 @@ _data = {{
 }}
 """
 
-def _add_bezpoint_to(origin, points, tilts, bezpoint):
-    point = bezpoint.co + origin
-    handle_l = bezpoint.handle_left - bezpoint.co
-    handle_r = bezpoint.handle_right - bezpoint.co
+def _add_point_to(origin, points, tilts, point_local):
+    # We don't need the fourth value (should always be 1.0 in simple cases)
+    point_global = Vector(point_local.co[:3]) + origin
 
     # Convert z up -> y up, since that's what Godot expects
     points += [
-        handle_l.x, handle_l.z, -handle_l.y,
-        handle_r.x, handle_r.z, -handle_r.y,
-        point.x, point.z, -point.y
+        0.0, 0.0, 0.0,
+        0.0, 0.0, 0.0,
+        point_global.x, point_global.z, -point_global.y
     ]
-    tilts.append(bezpoint.tilt)
+    tilts.append(point_local.tilt)
 
 def _export_curve(origin, curve, precision, name, template=_export_template):
     print("EXPORT:", name)
     
     points = []
     tilts = []
-    
-    if curve.bezier_points:
-        for bezpoint in curve.bezier_points:
-            _add_bezpoint_to(origin, points, tilts, bezpoint)
+
+    if curve.points:
+        for point in curve.points:
+            _add_point_to(origin, points, tilts, point)
             
         if curve.use_cyclic_u:
-            _add_bezpoint_to(origin, points, tilts, curve.bezier_points[0])
+            _add_point_to(origin, points, tilts, curve.points[0])
 
         # round everything to prevent errors in godot:
         points = [round(i, precision) for i in points]
@@ -83,7 +82,7 @@ def _export_curve(origin, curve, precision, name, template=_export_template):
 
 class GodotCurveExporter(bpy.types.Operator):
     
-    """Export all bezier curves into a format (.tres) that Godot can recognize"""
+    """Export all curves into a format (.tres) that Godot can recognize"""
     bl_idname = "export.godot_curves"
     bl_label = "Export Curves For Godot"
     bl_options = {'REGISTER'}
@@ -102,25 +101,13 @@ class GodotCurveExporter(bpy.types.Operator):
         
         for obj in context.scene.objects:
             if obj.type == "CURVE":
-                if len(obj.data.splines) == 1:
-                    export_file_name = self.directory + (obj.name + ".tres")
-                    _export_curve(
-                        obj.location,
-                        obj.data.splines[0],
-                        self.precision,
-                        export_file_name
-                    )
-                else:
-                    i = 0
-                    for subcurve in obj.data.splines:
-                        export_file_name = self.directory + (obj.name + "_" + str(i) + ".tres")
-                        _export_curve(
-                            obj.location,
-                            subcurve,
-                            self.precision,
-                            export_file_name
-                        )
-                        i += 1
+                export_file_name = self.directory + (obj.name + ".tres")
+                _export_curve(
+                    obj.location,
+                    obj.data.splines[0],
+                    self.precision,
+                    export_file_name
+                )
 
         return {'FINISHED'}
 
