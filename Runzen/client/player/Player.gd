@@ -42,17 +42,25 @@ func _set_current_path(path: Path):
 	current_path.curve = Curve3D.new()
 
 	for i in path.curve.get_point_count():
+		# Convert 3D path to 2D path (we ignore the height coordinate). Instead,
+		# we stick the player to the ground, making us robust against invalid
+		# waypoints. Also, 2D points are easier to do math on a bit later
+		var point_copy = path.curve.get_point_position(i)
+		point_copy.y = 0
+		current_path.curve.add_point(point_copy, Vector3(), Vector3())
+		
+	for i in current_path.curve.get_point_count():
 		var beforei = i - 1
 		if beforei < 0:
-			beforei += path.curve.get_point_count()
+			beforei += current_path.curve.get_point_count()
 		var afteri = i + 1
-		if afteri == path.curve.get_point_count():
+		if afteri == current_path.curve.get_point_count():
 			afteri = 0
 
-		var curr = path.curve.get_point_position(i)
-		var before = path.curve.get_point_position(beforei)
-		var after = path.curve.get_point_position(afteri)
-
+		var curr = current_path.curve.get_point_position(i)
+		var before = current_path.curve.get_point_position(beforei)
+		var after = current_path.curve.get_point_position(afteri)
+		
 		var after_delta = (after - curr)
 		var before_delta = (before - curr)
 		var avg = ((after_delta.normalized() + before_delta.normalized()) / 2.0).normalized()
@@ -70,7 +78,8 @@ func _set_current_path(path: Path):
 		var control_out = avg.rotated(Vector3.UP, turn_angle).normalized() * (smaller_delta.length() / 5.0)
 		var control_in = -control_out
 
-		current_path.curve.add_point(path.curve.get_point_position(i), control_in, control_out)
+		current_path.curve.set_point_in(i, control_in)
+		current_path.curve.set_point_out(i, control_out)
 
 	# Close the loop!
 	current_path.curve.add_point(current_path.curve.get_point_position(0), current_path.curve.get_point_in(0), current_path.curve.get_point_out(0))
