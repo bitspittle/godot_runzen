@@ -8,5 +8,5 @@ func _process(delta):
 	_elapsed += delta
 
 func _on_StepSensor_half_step_taken(magnitude):
-	_controller.steps_per_sec.value = [_elapsed, magnitude]
+	_controller.half_step.value = [_elapsed, magnitude]
 

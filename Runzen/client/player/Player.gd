@@ -30,12 +30,12 @@ onready var _ground_detector = $GroundDetector
 onready var _ground_orientation = $GroundOrientation
 
 onready var _footsteps = $Footsteps/Audio
-onready var _footsteps_countdown = $Footsteps/Audio/CountdownTimer
-onready var _footsteps_rest = $Footsteps/RestTimer
+onready var _footsteps_next_step = $Footsteps/Audio/CountdownTimer
+onready var _footsteps_stop = $Footsteps/RestTimer
 
 func _ready():
 	if _client != null:
-		_client.steps_per_sec.connect("values_changed", self, "_on_StepsPerSec_values_changed")
+		_client.half_step.connect("values_changed", self, "_on_HalfStep_values_changed")
 	
 	_update_ui()
 
@@ -141,9 +141,9 @@ func _prune_half_steps():
 	&& half_steps.get_item(0)[0] < prune_if_before:
 		half_steps.remove_first()
 		
-func _on_StepsPerSec_values_changed():
-	half_steps.append(_client.steps_per_sec.value)
-	_footsteps_rest.start()
+func _on_HalfStep_values_changed():
+	half_steps.append(_client.half_step.value)
+	_footsteps_stop.start()
 
 func _update_steps_per_sec():
 	if _client == null: 
@@ -167,15 +167,15 @@ func _physics_process(delta):
 		var vel = Vector3(0.0, -9.8, 0.0)
 		vel = move_and_collide(vel * delta)
 		
-		if _footsteps_countdown.is_stopped():
+		if _footsteps_next_step.is_stopped():
 			_footsteps.step()
 			# Too many steps sounds chaotic
 			var clamped_steps_per_sec = min(_curr_steps_per_sec, 5)
-			_footsteps_countdown.start(1.0 / clamped_steps_per_sec)
+			_footsteps_next_step.start(1.0 / clamped_steps_per_sec)
 			
 		_update_ui()
 	else:
-		_footsteps_countdown.stop()
+		_footsteps_next_step.stop()
 
 func _update_ui():
 	var miles = _distance * 0.000621371
