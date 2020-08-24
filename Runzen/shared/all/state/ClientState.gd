@@ -22,5 +22,3 @@ func _ready():
 		current_path.restrict_to_ids = restrict_to_ids
 		current_offset.restrict_to_ids = restrict_to_ids
 		steps_per_sec.restrict_to_ids = restrict_to_ids
-	else:
-		steps_per_sec.value = 0.0

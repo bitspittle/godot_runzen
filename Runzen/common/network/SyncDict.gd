@@ -47,7 +47,11 @@ func _set_value(v):
 	self.values["_"] = v
 
 func _get_value():
-	return self.values["_"]
+	if self.values.has("_"):
+		return self.values["_"]
+	else:
+		print("Trying to get general value, not set for SyncDict: ", get_path())
+		return null
 
 func _ready():
 	if NetUtils.is_puppet(self):

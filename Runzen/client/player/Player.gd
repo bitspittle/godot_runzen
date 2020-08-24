@@ -1,12 +1,18 @@
 extends KinematicBody
 
 const METERS_PER_STEP = 0.7
-var _debug_steps_per_sec = 100
+var _debug_steps_per_sec = 0
+var _target_steps_per_sec = 0.0
+var _curr_steps_per_sec = 0.0
 
 var _elapsed = 0.0
 var _distance = 0.0
 
 var current_path: Path = null setget _set_current_path
+
+# A list of [timestamp, magnitude] half steps taken in the last
+# second.
+var half_steps = CircularBuffer.new()
 
 onready var _follow = $PathFollow
 
@@ -23,16 +29,22 @@ onready var _client = SyncRoot.find_client(NetUtils.get_unique_id(self))
 onready var _ground_detector = $GroundDetector
 onready var _ground_orientation = $GroundOrientation
 
-onready var _footsteps = $FootstepsAudio
-onready var _footsteps_countdown = $FootstepsAudio/Countdown
+onready var _footsteps = $Footsteps/Audio
+onready var _footsteps_countdown = $Footsteps/Audio/CountdownTimer
+onready var _footsteps_rest = $Footsteps/RestTimer
 
 func _ready():
+	if _client != null:
+		_client.steps_per_sec.connect("values_changed", self, "_on_StepsPerSec_values_changed")
+	
 	_update_ui()
 
 func _process(delta):
 	for i in 10:
 		if Input.is_key_pressed(KEY_0 + i):
 			_debug_steps_per_sec = i
+		elif Input.is_key_pressed(KEY_KP_0):
+			_debug_steps_per_sec = 100
 			
 	if Input.is_action_just_pressed("camera_toggle"):
 		if _eye_camera.current:
@@ -119,16 +131,36 @@ func _snap_to_follow():
 
 	_pivot.rotation.y = _follow.rotation.y + (PI / 2)
 
-func _steps_per_sec():
-	if _client == null: return _debug_steps_per_sec
-	return _client.steps_per_sec.value
+func _prune_half_steps():
+	if half_steps.is_empty():
+		return
+
+	var last = half_steps.get_item(-1)
+	var prune_if_before = last[0] - 1.0
+	while !half_steps.is_empty() \
+	&& half_steps.get_item(0)[0] < prune_if_before:
+		half_steps.remove_first()
+		
+func _on_StepsPerSec_values_changed():
+	half_steps.append(_client.steps_per_sec.value)
+	_footsteps_rest.start()
+
+func _update_steps_per_sec():
+	if _client == null: 
+		_target_steps_per_sec = _debug_steps_per_sec
+	else:
+		_prune_half_steps()
+		_target_steps_per_sec = half_steps.size() / 2.0
+
+	_curr_steps_per_sec = lerp(_curr_steps_per_sec, _target_steps_per_sec, 0.05)
 
 func _physics_process(delta):
-	var steps_per_sec = _steps_per_sec()
-	if steps_per_sec > 0:
+	_update_steps_per_sec()
+
+	if _curr_steps_per_sec > 0:
 		# The steeper the ground, the slower the player moves
 		var ground_slope = _eye_camera.rotation.x
-		_distance += cos(ground_slope) * steps_per_sec * METERS_PER_STEP * delta
+		_distance += cos(ground_slope) * _curr_steps_per_sec * METERS_PER_STEP * delta
 
 		_follow.offset = _distance
 		_snap_to_follow()
@@ -138,18 +170,23 @@ func _physics_process(delta):
 		if _footsteps_countdown.is_stopped():
 			_footsteps.step()
 			# Too many steps sounds chaotic
-			var clamped_steps_per_sec = min(steps_per_sec, 5)
+			var clamped_steps_per_sec = min(_curr_steps_per_sec, 5)
 			_footsteps_countdown.start(1.0 / clamped_steps_per_sec)
+			
+		_update_ui()
 	else:
 		_footsteps_countdown.stop()
 
 func _update_ui():
 	var miles = _distance * 0.000621371
 	_mph_label.text = _mph_label_format % miles
-	_steps_label.text = _steps_label_format % _steps_per_sec()
-
-func _on_UpdateUiTimer_timeout():
-	_update_ui()
+	_steps_label.text = _steps_label_format % _curr_steps_per_sec
 
 func _on_StepCountdown_timeout():
 	_footsteps.step()
+
+func _on_RestTimer_timeout():
+	half_steps.clear()
+	_target_steps_per_sec = 0.0
+	_update_ui()
+	

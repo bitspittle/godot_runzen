@@ -48,7 +48,7 @@ func capacity() -> int:
 func size() -> int:
 	return _size
 
-func empty() -> bool:
+func is_empty() -> bool:
 	return _size == 0
 
 func get_item(index: int):
@@ -61,7 +61,7 @@ func get_item(index: int):
 	return _values[(_first + index) % _values.size()]
 
 func remove_first():
-	if empty():
+	if is_empty():
 		push_error("Cannot call remove_first on empty buffer")
 
 	var value = _values[_first]
@@ -70,7 +70,7 @@ func remove_first():
 	return value
 
 func remove_last():
-	if empty():
+	if is_empty():
 		push_error("Cannot call remove_last on empty buffer")
 
 	var last = _next - 1

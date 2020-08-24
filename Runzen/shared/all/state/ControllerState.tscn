@@ -9,4 +9,7 @@ script = ExtResource( 2 )
 [node name="StepsPerSec" type="Node" parent="."]
 script = ExtResource( 1 )
 throttle_msec = 250
+
+[node name="SyncDict" type="Node" parent="."]
+script = ExtResource( 1 )
 [connection signal="values_changed" from="StepsPerSec" to="." method="_on_StepsPerSec_values_changed"]
