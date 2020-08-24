@@ -20,7 +20,10 @@ var _TIME_POST_DUSK = _to_time(14)
 var _TIME_NIGHT = _to_time(15)
 var _TIME_MIDNIGHT = _to_time(18)
 
-var _time_of_day = _TIME_NOON
+var _time_of_day = _TIME_PRE_DUSK
+
+const _MAX_ORBIT_TILT = (PI / 2.0) / 3.0
+var _day = 0 # As days pass, orbit goes from exactly around equator to slightly tilted
 
 const _TIME_ELAPSED_MULTIPLIER = 60.0 * 60.0 # Every real second, this may seconds pass in game
 
@@ -30,7 +33,14 @@ static func _to_time(hour: float) -> float:
 func _process(delta):
 	_time_of_day += delta * _TIME_ELAPSED_MULTIPLIER
 	if (_time_of_day > _MAX_TIME_OF_DAY):
+		_day += 1
 		_time_of_day -= _MAX_TIME_OF_DAY
+		# Slowly tweak orbit angle
+		# 0 days: sin(day) -> 0
+		# 90 days: sin(day) -> 1
+		# 180 days: sin(day) -> 0
+		# 270 days: sin(day) -> -1
+		_pivot.rotation.x = _MAX_ORBIT_TILT * sin(deg2rad(_day))
 	
 	_pivot.rotation.z = (_time_of_day / _MAX_TIME_OF_DAY) * 2 * PI
 
