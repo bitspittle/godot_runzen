@@ -81,6 +81,11 @@ current = true
 fov = 60.0
 far = 5000.0
 
+[node name="ThirdPersonCamera" type="Camera" parent="Pivot"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.19893, 25.1174 )
+fov = 60.0
+far = 5000.0
+
 [node name="FootstepsAudio" parent="." instance=ExtResource( 2 )]
 
 [node name="Countdown" type="Timer" parent="FootstepsAudio"]

@@ -24,13 +24,8 @@ material/0 = ExtResource( 3 )
 [node name="Path" type="Path" parent="." index="4"]
 curve = ExtResource( 7 )
 
-[node name="CinematicCamera" type="Camera" parent="." index="5"]
-transform = Transform( 1, 0, 0, 0, 0.998645, -0.0520397, 0, 0.0520397, 0.998645, 1, 73, 252 )
-fov = 42.4723
-far = 10000.0
-
-[node name="Land" parent="." index="6"]
+[node name="Land" parent="." index="5"]
 material/0 = ExtResource( 3 )
 
-[node name="Bridge" parent="." index="7"]
+[node name="Bridge" parent="." index="6"]
 material/0 = ExtResource( 3 )

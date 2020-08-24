@@ -11,7 +11,8 @@ var current_path: Path = null setget _set_current_path
 onready var _follow = $PathFollow
 
 onready var _pivot = $Pivot
-onready var _camera = $Pivot/Eye/EyeCamera
+onready var _eye_camera = $Pivot/Eye/EyeCamera
+onready var _third_person_camera = $Pivot/ThirdPersonCamera
 onready var _mph_label = $Control/Panel/MphLabel
 onready var _steps_label = $Control/Panel/StepsLabel
 onready var _mph_label_format = _mph_label.text
@@ -32,6 +33,14 @@ func _process(delta):
 	for i in 10:
 		if Input.is_key_pressed(KEY_0 + i):
 			_debug_steps_per_sec = i
+			
+	if Input.is_action_just_pressed("camera_toggle"):
+		if _eye_camera.current:
+			_third_person_camera.current = true
+			_eye_camera.current = false
+		else:
+			_third_person_camera.current = false
+			_eye_camera.current = true
 
 func _set_current_path(path: Path):
 	if current_path != null:
@@ -105,8 +114,8 @@ func _snap_to_follow():
 		# Have camera's x rotation (looking up or down) align with the ground
 		# e.g. on an upslope, look up
 		var ground_normal = _ground_detector.get_collision_normal()
-		_camera.global_transform = _camera.global_transform.interpolate_with(_align_with_y(_camera.global_transform, ground_normal), 0.01)
-		_camera.rotation = Vector3(_camera.rotation.x, 0.0, 0.0)
+		_eye_camera.global_transform = _eye_camera.global_transform.interpolate_with(_align_with_y(_eye_camera.global_transform, ground_normal), 0.01)
+		_eye_camera.rotation = Vector3(_eye_camera.rotation.x, 0.0, 0.0)
 
 	_pivot.rotation.y = _follow.rotation.y + (PI / 2)
 
@@ -118,7 +127,7 @@ func _physics_process(delta):
 	var steps_per_sec = _steps_per_sec()
 	if steps_per_sec > 0:
 		# The steeper the ground, the slower the player moves
-		var ground_slope = _camera.rotation.x
+		var ground_slope = _eye_camera.rotation.x
 		_distance += cos(ground_slope) * steps_per_sec * METERS_PER_STEP * delta
 
 		_follow.offset = _distance
