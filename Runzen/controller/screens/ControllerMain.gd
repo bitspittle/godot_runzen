@@ -7,6 +7,6 @@ onready var _controller = SyncRoot.find_controller(NetUtils.get_unique_id(self))
 func _process(delta):
 	_elapsed += delta
 
-func _on_StepSensor_half_step_taken(magnitude):
-	_controller.half_step.value = [_elapsed, magnitude]
+func _on_StepSensor_step_taken(magnitude):
+	_controller.step.value = [_elapsed, magnitude]
 

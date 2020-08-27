@@ -30,4 +30,4 @@ __meta__ = {
 
 [node name="StepSensor" type="Node" parent="."]
 script = ExtResource( 1 )
-[connection signal="half_step_taken" from="StepSensor" to="." method="_on_StepSensor_half_step_taken"]
+[connection signal="step_taken" from="StepSensor" to="." method="_on_StepSensor_step_taken"]

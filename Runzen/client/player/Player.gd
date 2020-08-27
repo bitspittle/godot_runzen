@@ -10,9 +10,8 @@ var _distance = 0.0
 
 var current_path: Path = null setget _set_current_path
 
-# A list of [timestamp, magnitude] half steps taken in the last
-# second.
-var half_steps = CircularBuffer.new()
+# A list of recent [timestamp, magnitude] steps taken
+var _steps = CircularBuffer.new(4)
 
 onready var _follow = $PathFollow
 
@@ -35,7 +34,7 @@ onready var _footsteps_stop = $Footsteps/RestTimer
 
 func _ready():
 	if _client != null:
-		_client.half_step.connect("values_changed", self, "_on_HalfStep_values_changed")
+		_client.step.connect("values_changed", self, "_on_Step_values_changed")
 	
 	_update_ui()
 
@@ -127,37 +126,34 @@ func _snap_to_follow():
 		# e.g. on an upslope, look up
 		var ground_normal = _ground_detector.get_collision_normal()
 		_eye_camera.global_transform = _eye_camera.global_transform.interpolate_with(_align_with_y(_eye_camera.global_transform, ground_normal), 0.01)
-		_eye_camera.rotation = Vector3(_eye_camera.rotation.x, 0.0, 0.0)
+		_eye_camera.rotation = Vector3(_eye_camera.rotation.x / 2.0, 0.0, 0.0)
 
 	_pivot.rotation.y = _follow.rotation.y + (PI / 2)
 
-func _prune_half_steps():
-	if half_steps.is_empty():
-		return
-
-	var last = half_steps.get_item(-1)
-	var prune_if_before = last[0] - 1.0
-	while !half_steps.is_empty() \
-	&& half_steps.get_item(0)[0] < prune_if_before:
-		half_steps.remove_first()
-		
-func _on_HalfStep_values_changed():
-	half_steps.append(_client.half_step.value)
+func _on_Step_values_changed():
+	_steps.append(_client.step.value)
 	_footsteps_stop.start()
 
 func _update_steps_per_sec():
 	if _client == null: 
 		_target_steps_per_sec = _debug_steps_per_sec
 	else:
-		_prune_half_steps()
-		_target_steps_per_sec = half_steps.size() / 2.0
+		_target_steps_per_sec = 0
+		if _steps.size() == 1:
+			_target_steps_per_sec = 1.0
+		elif _steps.size() > 1:
+			var total = 0.0
+			for i in _steps.size() - 1:
+				total += (_steps.get_item(i+1)[0] - _steps.get_item(i)[0])
+			var avg_step_time_per_sec = total / (_steps.size() - 1)
+			_target_steps_per_sec = 1.0 / avg_step_time_per_sec
 
 	_curr_steps_per_sec = lerp(_curr_steps_per_sec, _target_steps_per_sec, 0.05)
 
 func _physics_process(delta):
 	_update_steps_per_sec()
 
-	if _curr_steps_per_sec > 0:
+	if _curr_steps_per_sec > 0.0:
 		# The steeper the ground, the slower the player moves
 		var ground_slope = _eye_camera.rotation.x
 		_distance += cos(ground_slope) * _curr_steps_per_sec * METERS_PER_STEP * delta
@@ -186,7 +182,8 @@ func _on_StepCountdown_timeout():
 	_footsteps.step()
 
 func _on_RestTimer_timeout():
-	half_steps.clear()
+	_steps.clear()
 	_target_steps_per_sec = 0.0
+
 	_update_ui()
 	

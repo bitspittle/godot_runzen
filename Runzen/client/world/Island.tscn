@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://client/assets/models/wuhu.escn" type="PackedScene" id=1]
 [ext_resource path="res://client/player/Player.tscn" type="PackedScene" id=2]
@@ -7,6 +7,12 @@
 [ext_resource path="res://client/world/Sky.tscn" type="PackedScene" id=5]
 [ext_resource path="res://client/world/Water.tscn" type="PackedScene" id=6]
 [ext_resource path="res://client/assets/paths/Path00.tres" type="Curve3D" id=7]
+
+[sub_resource type="Curve3D" id=1]
+_data = {
+"points": PoolVector3Array( 0, 0, 0, 0, 0, 0, 5.77196, -30.7675, -143.698, 0, 0, 0, 0, 0, 0, -0.843826, 0.125244, -166.9, 0, 0, 0, 0, 0, 0, -147.432, 58.5022, -165.654, 0, 0, 0, 0, 0, 0, -159.89, 62.595, -156.103, 0, 0, 0, 0, 0, 0, -174.009, 67.3997, -157.349, 0, 0, 0, 0, 0, 0, -185.637, 70.7805, -172.299, 0, 0, 0, 0, 0, 0, -177.747, 69.7129, -192.647, 0, 0, 0, 0, 0, 0, -157.399, 62.9509, -195.553, 0, 0, 0, 0, 0, 0, -147.432, 58.6802, -187.248, 0, 0, 0, 0, 0, 0, -142.864, 57.6125, -176.451, 0, 0, 0, 0, 0, 0, -1.67433, 54.0537, -178.112, 0, 0, 0, 0, 0, 0, 18.6736, -6.448, -193.892, 0, 0, 0, 0, 0, 0, 34.869, -17.8367, -188.909, 0, 0, 0, 0, 0, 0, 50.6491, -32.0725, -166.07, 0, 0, 0, 0, 0, 0, 31.3146, -29.937, -152.34 ),
+"tilts": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+}
 
 [node name="Island" instance=ExtResource( 1 )]
 script = ExtResource( 4 )
@@ -29,3 +35,6 @@ material/0 = ExtResource( 3 )
 
 [node name="Bridge" parent="." index="6"]
 material/0 = ExtResource( 3 )
+
+[node name="Path2" type="Path" parent="." index="7"]
+curve = SubResource( 1 )

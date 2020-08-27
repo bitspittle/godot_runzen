@@ -6,7 +6,7 @@
 [node name="ControllerState" type="Node"]
 script = ExtResource( 2 )
 
-[node name="HalfStep" type="Node" parent="."]
+[node name="Step" type="Node" parent="."]
 script = ExtResource( 1 )
 throttle_msec = 250
-[connection signal="values_changed" from="HalfStep" to="." method="_on_HalfStep_values_changed"]
+[connection signal="values_changed" from="Step" to="." method="_on_Step_values_changed"]

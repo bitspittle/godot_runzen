@@ -17,6 +17,6 @@ reliable = true
 [node name="CurrentOffset" type="Node" parent="."]
 script = ExtResource( 1 )
 
-[node name="HalfStep" type="Node" parent="."]
+[node name="Step" type="Node" parent="."]
 script = ExtResource( 1 )
 throttle_msec = 250

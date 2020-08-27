@@ -10,7 +10,7 @@ var id = 0
 onready var display_name: SyncDict = $DisplayName
 onready var current_path: SyncDict = $CurrentPath
 onready var current_offset: SyncDict = $CurrentOffset
-onready var half_step: SyncDict = $HalfStep
+onready var step: SyncDict = $Step
 
 func _ready():
 	if NetUtils.is_master(self):
@@ -21,4 +21,4 @@ func _ready():
 		display_name.restrict_to_ids = restrict_to_ids
 		current_path.restrict_to_ids = restrict_to_ids
 		current_offset.restrict_to_ids = restrict_to_ids
-		half_step.restrict_to_ids = restrict_to_ids
+		step.restrict_to_ids = restrict_to_ids
