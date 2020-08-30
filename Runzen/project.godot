@@ -83,6 +83,10 @@ config/icon="res://icon.png"
 Handshake="*res://shared/all/network/Handshake.gd"
 SyncRoot="*res://shared/all/state/SyncRoot.tscn"
 
+[display]
+
+window/handheld/orientation="portrait"
+
 [editor]
 
 main_run_args="--local"

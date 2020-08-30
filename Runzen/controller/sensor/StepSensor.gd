@@ -22,7 +22,7 @@ func _ready():
 		push_error("StepSensor only supported on mobile devices")
 
 func _process(delta):
-	_curr_filter -= (delta * 2.0)
+	_curr_filter -= delta
 	_curr_filter = max(_FILTER_MIN, _curr_filter)
 	
 	var acc = Input.get_accelerometer()

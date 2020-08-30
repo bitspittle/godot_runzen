@@ -1,13 +1,16 @@
 extends Node
 
-onready var _code_edit = $CodeEdit
+onready var _code = $PairingCodeLabel
 onready var _status_label = $StatusLabel
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	_code_edit.text = ""
-	_code_edit.grab_focus()
+	_code.text = ""
 	_status_label.text = ""
+
+	for child in $KeyPad.get_children():
+		var button: Button = child
+		button.connect("pressed", self, "_on_KeyPadButton_pressed", [button])
 
 	NetUtils.on_server_connected(self, "_connected_success")
 	NetUtils.on_server_rejected(self, "_connected_failure")
@@ -24,10 +27,18 @@ func _connected_success():
 func _connected_failure():
 	_status_label.text = "Connection rejected"
 
-func _on_CodeEdit_text_changed(new_text: String):
-	if new_text.length() == 6:
-		OS.hide_virtual_keyboard()
-		Handshake.request_pairing(new_text.to_lower())
-
 func _pairing_succeeded():
 	get_tree().change_scene("res://controller/screens/ControllerMain.tscn")
+
+func _on_KeyPadButton_pressed(sender: Button):
+	if sender.text == "X":
+		if !_code.text.empty():
+			_code.text = _code.text.substr(0, _code.text.length() - 1)
+			
+	else:
+		if _code.text.length() == 6:
+			_code.text = _code.text.substr(0, _code.text.length() - 1)
+
+		_code.text += sender.text
+		if _code.text.length() == 6:
+			Handshake.request_pairing(_code.text)

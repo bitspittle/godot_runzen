@@ -5,8 +5,10 @@
 [ext_resource path="res://shared/frontend/assets/themes/ui_theme.theme" type="Theme" id=3]
 
 [node name="PairController" type="Panel"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_right = 0.586
+anchor_bottom = 1.707
+margin_right = -0.0640259
+margin_bottom = -0.200073
 theme = ExtResource( 3 )
 script = ExtResource( 1 )
 __meta__ = {
@@ -14,36 +16,175 @@ __meta__ = {
 }
 
 [node name="EnterCodeLabel" type="Label" parent="."]
-margin_left = 60.0
-margin_top = 60.0
+margin_left = 40.0
+margin_top = 57.0
+margin_right = 496.0
+margin_bottom = 108.0
 text = "Enter pairing code:
 "
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CodeEdit" type="LineEdit" parent="."]
-margin_left = 80.3079
-margin_top = 123.693
-margin_right = 858.308
-margin_bottom = 197.693
-custom_fonts/font = ExtResource( 2 )
-max_length = 6
+[node name="KeyPad" type="Control" parent="."]
+anchor_right = 1.0
+margin_left = 30.0
+margin_top = 190.0
+margin_right = -30.0
+margin_bottom = 732.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="StatusLabel" type="Label" parent="."]
+[node name="Button7" type="Button" parent="KeyPad"]
+margin_left = 12.0
+margin_right = 160.0
+margin_bottom = 148.0
+custom_fonts/font = ExtResource( 2 )
+text = "7"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button8" type="Button" parent="KeyPad"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -74.0
+margin_right = 74.0
+margin_bottom = 148.0
+custom_fonts/font = ExtResource( 2 )
+text = "8"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button9" type="Button" parent="KeyPad"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -160.0
+margin_right = -12.0
+margin_bottom = 148.0
+custom_fonts/font = ExtResource( 2 )
+text = "9"
+
+[node name="Button4" type="Button" parent="KeyPad"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 12.0
+margin_top = -87.0
+margin_right = 160.0
+margin_bottom = 61.0
+custom_fonts/font = ExtResource( 2 )
+text = "4"
+
+[node name="Button5" type="Button" parent="KeyPad"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -74.0
+margin_top = -87.0
+margin_right = 74.0
+margin_bottom = 61.0
+custom_fonts/font = ExtResource( 2 )
+text = "5"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button6" type="Button" parent="KeyPad"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -160.0
+margin_top = -87.0
+margin_right = -12.0
+margin_bottom = 61.0
+custom_fonts/font = ExtResource( 2 )
+text = "6"
+
+[node name="Button1" type="Button" parent="KeyPad"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 12.0
+margin_top = -174.0
+margin_right = 160.0
+margin_bottom = -26.0
+custom_fonts/font = ExtResource( 2 )
+text = "1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button2" type="Button" parent="KeyPad"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -74.0
+margin_top = -174.0
+margin_right = 74.0
+margin_bottom = -26.0
+custom_fonts/font = ExtResource( 2 )
+text = "2"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button3" type="Button" parent="KeyPad"]
+anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 60.0
-margin_top = -131.0
-margin_right = -54.0
-margin_bottom = -49.0
+margin_left = -160.0
+margin_top = -174.0
+margin_right = -12.0
+margin_bottom = -26.0
+custom_fonts/font = ExtResource( 2 )
+text = "3"
+
+[node name="Button0" type="Button" parent="KeyPad"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 12.0
+margin_top = 10.0
+margin_right = 346.0
+margin_bottom = 158.0
+custom_fonts/font = ExtResource( 2 )
+text = "0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonX" type="Button" parent="KeyPad"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -160.0
+margin_top = 10.0
+margin_right = -12.0
+margin_bottom = 158.0
+custom_fonts/font = ExtResource( 2 )
+text = "X"
+
+[node name="StatusLabel" type="Label" parent="."]
+anchor_right = 1.0
+margin_left = 52.0
+margin_top = 946.0
+margin_right = -44.0
+margin_bottom = 1020.0
 text = "(Status message here)
 "
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="text_changed" from="CodeEdit" to="." method="_on_CodeEdit_text_changed"]
+
+[node name="PairingCodeLabel" type="Label" parent="."]
+anchor_right = 1.0
+margin_top = 102.0
+margin_bottom = 187.0
+custom_fonts/font = ExtResource( 2 )
+text = "123456"
+align = 1
