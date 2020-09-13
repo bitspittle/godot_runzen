@@ -17,6 +17,7 @@ func _ready():
 
 	Handshake.connect("pairing_succeeded", self, "_pairing_succeeded")
 
+	# Needed for networking to work
 	var client_scene = preload("res://shared/frontend/network/Client.tscn")
 	get_tree().get_root().add_child(client_scene.instance())
 

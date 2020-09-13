@@ -7,6 +7,7 @@ func _ready():
 	if port == 0:
 		port = NetDefaults.PORT
 
+	print("IPs: ", IP.get_local_addresses())
 	print("Server will listen on port: ", port)
 
 	_server = WebSocketServer.new()

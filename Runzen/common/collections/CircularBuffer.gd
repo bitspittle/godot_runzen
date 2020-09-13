@@ -50,6 +50,9 @@ func size() -> int:
 
 func is_empty() -> bool:
 	return _size == 0
+	
+func is_full() -> bool:
+	return size() == capacity()
 
 func get_item(index: int):
 	if index >= _size || index < -_size:
